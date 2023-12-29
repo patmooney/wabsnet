@@ -16,3 +16,12 @@ export const shuffle = (array: Array<unknown>): Array<unknown> => {
 
   return array;
 }
+
+export const cycle = <T>(array: Array<T>): T => {
+    const iter = array.shift();
+    if (!iter) {
+        throw new Error("Cannot cycle an empty array");
+    }
+    array.push(iter);
+    return iter;
+}

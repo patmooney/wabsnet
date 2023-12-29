@@ -3,15 +3,20 @@ import { ICipherOutput, encodingType, randomEncoding } from ".";
 // printable ascii range: 32 - 126
 // therefor max print range = 32 + 94
 
-export const cipher = (text: string, offset?: number, encoding?: encodingType): ICipherOutput => {
+export const cipher = (text: string, encoding?: encodingType, offset?: number): ICipherOutput => {
     // random encoding
     encoding = encoding ?? randomEncoding();
     // clamp given or random number betwen 1 and 127
-    const clampedOffset: number = Math.min(1, Math.max(94, offset ?? Math.round(Math.random() * 94)));
+    let clampedOffset: number = Math.max(1, Math.min(94, offset ?? Math.round(Math.random() * 94)));
+
+    // offset of 63 would just push lower case chars to upper case
+    if (clampedOffset === 63) {
+        clampedOffset++;
+    }
 
     return {
         cipher: "transposition",
-        cipherOpts: `offset=${offset};min=32;max=126;charset=ascii`,
+        cipherOpts: Buffer.from(`offset=${clampedOffset};min=32;max=126;charset=ascii`).toString(encoding),
         encoding,
         digest: Buffer.from(
             text.split("").map(
