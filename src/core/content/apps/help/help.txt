@@ -1,0 +1,7 @@
+wabsnet interface v1.933
+
+Usage: readline [command]
+
+Commands:
+ - help               Display this text
+ - apps               List, install, remove and interact with applications.

@@ -1,0 +1,18 @@
+{
+    "contacts": [
+        {
+            "username": "oljohnnyfranco",
+            "realName": "John Fracois"
+        }
+    ],
+    "threads": {
+        "oljohnnyfranco": [
+            {
+                "text": "I don't give up my sources, sorry",
+                "meta": {
+                    "remoteIp": "177.110.96.3"
+                }
+            }
+        ]
+    }
+}

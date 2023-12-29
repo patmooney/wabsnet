@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "commonjs",
+        "jsx": "preserve",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
+        "noImplicitReturns": true,
+        "noUnusedParameters": true,
+        "alwaysStrict": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "outDir": "./dist",
+        "lib": ["es2022", "esnext.asynciterable"],
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "typeRoots": [
+            "node_modules/@types",
+            "types"
+        ]
+    },
+    "exclude": ["node_modules"],
+    "include": ["src/**/*.ts", "tests/**/*.ts", "bin/**/*.ts"],
+    "files":  ["src/schema/zapatos/schema.d.ts"]
+}

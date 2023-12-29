@@ -1,0 +1,15 @@
+.env
+.env.local
+.env.*.local
+.npmrc
+coverage/
+dist
+node_modules/
+package-lock.json
+yarn-error.log
+db/schema.sql
+
+.local/
+
+# vim swp
+*.swp
