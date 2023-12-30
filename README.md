@@ -18,6 +18,57 @@
 
 Token can be gained by solving coding challenges outputted by `trace`, or just use `test` as the token.
 
+### Add a new application
+
+- Create a new app
+
+    // ./src/core/apps/example.ts
+    import { networkManager } from "../../core";
+    import { CommandManager } from "../../managers/commands";
+    import { pause } from "../../utils/pause";
+
+    // Sync function
+    const helloWorld = () => "Hello, World!";
+   
+    // IData is always passed to functions, it contains whatever the user has passed as args 
+    const helloName = ({ name }: IData) => `Hello, ${name}!`;
+   
+    // Generator functions to send back a stream of data 
+    function* randomNumberGenerator ({ randomNumberCount }: IData) {
+        try {
+            for (let i = 0; i < randomNumberCount; i++) {
+                yield Math.floor(Math.random() * 100);
+            }
+        } finally {
+            // user has ended request, cleanup here optional
+        }
+    }
+   
+    // functions can be called too! 
+    const asyncFile = async () => {
+        // ./src/core/content/apps/example/file.txt
+        const fileContent = await catFile("example/file.txt");
+        return fileContent;
+    }
+
+    const commands = new CommandManager();
+    commands.registerCommand("helloWorld", helloWorld);
+    commands.registerCommand("helloName", helloName);
+    commands.registerCommand("random", randomNumberGenerator);
+    commands.registerCommand("file", asyncFile);
+
+    export const app: IApp = {
+        name: "example",
+        label: "The Example Application",
+        description: "For demonstrating the creation of a new app",
+        // should it appear in the app store?
+        isIndexed: true,
+        commands
+    };
+
+- Add it to `./src/core.ts`
+- TODO: apps-store should allow users to choose the apps they have installed.
+
 ### TODO
 
 - Once you have gained temporary access to a user's computer you need to:
