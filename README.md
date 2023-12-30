@@ -31,3 +31,11 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
 - Maybe an online resource like a audio streaming site can be compromised and you can port-tunner through it to track user data packets
 - Generate an obscene amount of contacts and find a nice way to compress the data
 - Maybe some clues can be expressed in terms of points (x, y), the player will then have to render them to see the output visually
+
+- Need a mechanism where numbers go up to show achievement. Could be the % of the main story completed?
+ - Network speed, speeds up rate at which data is returned
+ - Threat level, some mechanism where your system is under threat from bad actors
+ - Money? Buy shit on the dark webz? I.e. key for a backdoor to a streaming service which gives better access to users.
+ - Limit on number of active queries to the backendz?
+
+- Electron App to give some sort of user-friendly presentable front-end to the goings-on, could display money, threat level, emails, active connections
