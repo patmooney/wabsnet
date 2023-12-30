@@ -36,7 +36,8 @@ async function* chat (data:IData) {
     }
     try {
         networkManager.addActive("chat", contact.remoteIp);
-        for (let d of chats[username]) {
+        const threads = chats[username] ?? chats["*"];
+        for (let d of threads) {
             yield d;
             await pause(CHAT_MESSAGE_DELAY);
         }
