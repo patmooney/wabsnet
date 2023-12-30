@@ -1,9 +1,11 @@
 import net from "node:net";
 import { parseArgs } from "../src/utils/parse-args";
+import xpipe from "xpipe";
 
+const sock = xpipe.eq("/tmp/wabsnet");
 const parts = process.argv.slice(2);
 let timeoutId: NodeJS.Timeout;
-const client = net.createConnection({ path: "/tmp/wabsnet" }, () => {
+const client = net.createConnection({ path: sock }, () => {
     const keepAlive = () => {
         timeoutId && clearTimeout(timeoutId);
         timeoutId = setTimeout(() => client.end(), 10000);

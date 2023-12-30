@@ -45,7 +45,7 @@ export class CommandManager {
             emitter.on("close", () => connected = false);
             while (connected) {
                 const { value, done } = await gen.next();
-                emitter.emit("msg", JSON.stringify(value));
+                value && emitter.emit("msg", JSON.stringify(value));
                 if (done) { break; }
             }
             gen.return();
