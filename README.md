@@ -80,15 +80,11 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
    - ~~download all/files of interest~~
    - some files may be too large to download in the time window requiring further key decrypting
    - this all leads to the user having to write fully automated code (and perhaps interface?)
-\
-\
 - Files on the user's computer may be a huge quantity of people's information which will need to be looked up online to identify a target
 - Should be other ways in order to access IP address for other users.
 - Maybe an online resource like a audio streaming site can be compromised and you can port-tunner through it to track user data packets
 - Generate an obscene amount of contacts and find a nice way to compress the data
 - Maybe some clues can be expressed in terms of points (x, y), the player will then have to render them to see the output visually
-\
-\
 - Need a mechanism where numbers go up to show achievement. Could be the % of the main story completed?
 - Network speed, speeds up rate at which data is returned
 - Threat level, some mechanism where your system is under threat from bad actors
@@ -100,6 +96,6 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
 - Maintain stats on effectiveness of code, i.e. money gained per minute, attacks completed per minute etc.
 - User's have a master key which can be calculted by continued attacks, the master key gives instant access to a compromised machine.
 - User lists can be sold on the dark-webz, price dictated by size, accuracy and the value of the target.
-\
-\
 - Electron App to give some sort of user-friendly presentable front-end to the goings-on, could display money, threat level, emails, active connections
+- Main story acts as a tutorial, all other facets should be dynamically generated.
+- App should give web addresses to local html files which require scraping, or can just host it on 127.0.0.1, maybe the site can have vulnerabilities built into it?
