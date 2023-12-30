@@ -1,14 +1,13 @@
-import EventEmitter from "node:events";
 import { appsManger } from "../../core";
 import { IApp } from "../../managers/apps";
 import { CommandExecFn, CommandManager } from "../../managers/commands";
 
-const exec: CommandExecFn = (emitter: EventEmitter) => {
+const exec: CommandExecFn = () => {
     const apps = appsManger.listApps();
     const appList = apps
         .filter(app => app.isIndexed)
         .map(app => ({ name: app.name, label: app.label, description: app.description }));
-    emitter.emit("msg", JSON.stringify(appList));
+    return appList;
 };
 
 const appsCommands = new CommandManager();

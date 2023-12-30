@@ -1,4 +1,3 @@
-import EventEmitter from "node:events";
 import { networkManager } from "../../core";
 import { IApp, IData } from "../../managers/apps";
 import { CommandManager } from "../../managers/commands";
@@ -11,24 +10,17 @@ import { cipher as brute } from "../../utils/cipher/brute";
 import { cycle } from "../../utils/array";
 import { CipherFn } from "../../managers/cipher";
 
-const scan = (emitter: EventEmitter) => {
-    emitter.emit("msg", JSON.stringify(networkManager.getActive()));
-    emitter.emit("end");
-};
+const scan = () => networkManager.getActive();
 
-const trace = async (emitter: EventEmitter, data: IData) => {
+async function* trace (data: IData) {
     const { remoteIp } = data.options;
-
     if (!remoteIp) {
         throw new Error("remoteIp is required");
     }
 
     let i = 0;
-    let connected = true;
-    emitter.on("close", () => connected = false);
     const ciphers = [trans, poly, rail, brute];
-
-    while (connected && networkManager.getCxn(undefined, remoteIp)) {
+    while (networkManager.getCxn(undefined, remoteIp)) {
         let activeToken = networkManager.getActiveAccessTokens(remoteIp).at(0);
         if (!activeToken) {
             activeToken = networkManager.addAccess(remoteIp);
@@ -40,15 +32,13 @@ const trace = async (emitter: EventEmitter, data: IData) => {
         }
         i = i === (chunks.length - 1) ? 0 : i + 1;
         const cipher = cycle<CipherFn>(ciphers);
-        emitter.emit("msg", JSON.stringify(await cipher(chunks[i], "utf8")));
+        yield cipher(chunks[i]);
         await pause(200);
     }
 
     if (!networkManager.getCxn(undefined, remoteIp)) {
         throw new Error("Lost connection with host");
     }
-
-    console.log("ended trace");
 };
 
 const netCommands = new CommandManager();

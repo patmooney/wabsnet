@@ -1,4 +1,3 @@
-import EventEmitter from "node:events";
 import { IApp, IData } from "../../managers/apps";
 import { CommandManager } from "../../managers/commands";
 import { pause } from "../../utils/pause";
@@ -12,7 +11,7 @@ const contacts: IContact[] = contactData;
 
 const CHAT_MESSAGE_DELAY = 5000;
 
-const search = async (emitter: EventEmitter, data: IData) => {
+const search = async (data: IData) => {
     const { username, realName, remoteIp } = data.options;
     const matches = contacts.filter(
         (contact) => {
@@ -21,10 +20,10 @@ const search = async (emitter: EventEmitter, data: IData) => {
                 && remoteIp ? contact.remoteIp === remoteIp : true;
         }
     );
-    emitter.emit("msg", JSON.stringify(matches));
+    return matches;
 };
 
-const chat = async (emitter: EventEmitter, data: IData) => {
+async function* chat (data:IData) {
     const { username } = data.options;
     if (!username) {
         throw new Error(`username is required`);
@@ -35,12 +34,15 @@ const chat = async (emitter: EventEmitter, data: IData) => {
     if (!contact) {
         throw new Error (`user ${username} not found`);
     }
-    networkManager.addActive("chat", contact.remoteIp);
-    for (let d of chats[username]) {
-        emitter.emit("msg", JSON.stringify(d));
-        await pause(CHAT_MESSAGE_DELAY);
+    try {
+        networkManager.addActive("chat", contact.remoteIp);
+        for (let d of chats[username]) {
+            yield d;
+            await pause(CHAT_MESSAGE_DELAY);
+        }
+    } finally {
+        networkManager.removeActive("chat", contact.remoteIp);
     }
-    networkManager.removeActive("chat", contact.remoteIp);
 }
 
 const chatCommands = new CommandManager();
