@@ -2,7 +2,6 @@ import { AppsManager, IApp } from "./managers/apps";
 
 import { app as help } from "./core/apps/help";
 import { app as apps } from "./core/apps/apps";
-import { app as boobs } from "./core/apps/boobs";
 import { app as news } from "./core/apps/news";
 import { app as chat } from "./core/apps/chat";
 import { app as netstat } from "./core/apps/netstat";
@@ -15,7 +14,6 @@ export const appsManger = new AppsManager();
 const coreApps = [
     help,
     apps,
-    boobs,
     news,
     chat,
     netstat,

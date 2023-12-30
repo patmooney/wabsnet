@@ -1,4 +1,5 @@
 import net from "node:net";
+import { parseArgs } from "../src/utils/parse-args";
 
 const parts = process.argv.slice(2);
 let timeoutId: NodeJS.Timeout;
@@ -9,7 +10,11 @@ const client = net.createConnection({ path: "/tmp/wabsnet" }, () => {
     };
     keepAlive();
 
-    console.log(`Sending command > ${parts.join(" ")}`);
+    const args = parseArgs(parts.filter(part => /^--/.test(part)));
+    const commands = parts.filter(part => /^[^-]/.test(part));
+    const data = [...commands, JSON.stringify(args)].filter(Boolean).join(" ");
+
+    console.log(`Sending command > ${data}`);
     client.on("data", (data: Buffer) => {
         keepAlive();
         const [err, msg] = JSON.parse(data.toString());
@@ -21,7 +26,7 @@ const client = net.createConnection({ path: "/tmp/wabsnet" }, () => {
             console.log(content);
         }
     });
-    client.write(parts.join(" "));
+    client.write(data);
     client.on("end", () => { 
         client.destroy();
         process.exit();

@@ -4,12 +4,13 @@
 
 import EventEmitter from "node:events";
 import { CommandNotFoundError, SubCommandNotSuppliedError } from "../errors";
+import { IData } from "./apps";
 
 export const isCommandExecFn = (fn: CommandManager | CommandExecFn): fn is CommandExecFn => {
     return !(fn instanceof CommandManager);
 };
 
-export type CommandExecFn = (emitter: EventEmitter, argv: string[]) => Promise<void> | void;
+export type CommandExecFn = (emitter: EventEmitter, data: IData) => Promise<void> | void;
 
 export class CommandManager {
     private commandMap: Map<string, CommandManager | CommandExecFn>;
@@ -23,20 +24,20 @@ export class CommandManager {
         this.commandMap.set(commandName, exec);
     }
 
-    public exec(commandName: string, argv: string[], emitter: EventEmitter): Promise<void> | void {
+    public exec(commandName: string, data: IData, emitter: EventEmitter): Promise<void> | void {
         const fn = this.commandMap.get(commandName);
         if (!fn) {
             throw new CommandNotFoundError(commandName);
         }
         if (isCommandExecFn(fn)) {
-            return fn(emitter, argv);
+            return fn(emitter, data);
         }
-        const subCommand = argv.shift();
+        const subCommand = data.commands.shift();
         if (subCommand) {
-            return fn.exec(subCommand, argv, emitter);
+            return fn.exec(subCommand, data, emitter);
         }
         try {
-            return fn.exec("help", argv, emitter);
+            return fn.exec("help", data, emitter);
         } catch (err) {
             throw new SubCommandNotSuppliedError();
         }

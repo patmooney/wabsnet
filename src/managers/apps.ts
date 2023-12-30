@@ -1,12 +1,17 @@
 import EventEmitter from "node:events";
 import { AppNotFoundError } from "../errors";
-import { CommandExecFn } from "./commands";
+import { CommandManager } from "./commands";
+
+export interface IData {
+    commands: string[];
+    options: Record<string, any>;
+}
 
 export interface IApp {
     name: string;
     label: string;
     isIndexed: boolean;
-    exec: CommandExecFn;
+    commands: CommandManager;
     description?: string;
 }
 
@@ -21,14 +26,14 @@ export class AppsManager {
         this.appMap.set(appName, app);
     }
 
-    public async execApp(appName: string, argv: string[], emitter: EventEmitter): Promise<void> {
+    public async execApp(appName: string, data: IData, emitter: EventEmitter): Promise<void> {
         try {
             const app = this.appMap.get(appName);
             if (!app) {
                 throw new AppNotFoundError(appName);
             }
-            const result = await app.exec(emitter, argv);
-            return result;
+            await app.commands.exec(data.commands.shift() ?? "default", data, emitter);
+            emitter.emit("end");
         } catch (e) {
             console.error(e);
             emitter.emit("error", (e as Error).message);

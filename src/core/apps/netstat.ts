@@ -1,8 +1,7 @@
 import EventEmitter from "node:events";
 import { networkManager } from "../../core";
-import { IApp } from "../../managers/apps";
+import { IApp, IData } from "../../managers/apps";
 import { CommandManager } from "../../managers/commands";
-import { parseArgs } from "../../utils/parse-args";
 import { pause } from "../../utils/pause";
 
 import { cipher as trans } from "../../utils/cipher/transposition";
@@ -17,12 +16,10 @@ const scan = (emitter: EventEmitter) => {
     emitter.emit("end");
 };
 
-const trace = async (emitter: EventEmitter, argv: string[]) => {
-    const opts = parseArgs<{
-        remoteIp?: string;
-    }>(argv);
+const trace = async (emitter: EventEmitter, data: IData) => {
+    const { remoteIp } = data.options;
 
-    if (!opts.remoteIp) {
+    if (!remoteIp) {
         throw new Error("remoteIp is required");
     }
 
@@ -31,10 +28,10 @@ const trace = async (emitter: EventEmitter, argv: string[]) => {
     emitter.on("close", () => connected = false);
     const ciphers = [trans, poly, rail, brute];
 
-    while (connected && networkManager.getCxn(undefined, opts.remoteIp)) {
-        let activeToken = networkManager.getActiveAccessTokens(opts.remoteIp).at(0);
+    while (connected && networkManager.getCxn(undefined, remoteIp)) {
+        let activeToken = networkManager.getActiveAccessTokens(remoteIp).at(0);
         if (!activeToken) {
-            activeToken = networkManager.addAccess(opts.remoteIp);
+            activeToken = networkManager.addAccess(remoteIp);
         }
         const chunkSize = Math.ceil(activeToken.token.length / 8);
         const chunks = activeToken.token.match(new RegExp(`.{1,${chunkSize}}`, 'g'));
@@ -47,7 +44,7 @@ const trace = async (emitter: EventEmitter, argv: string[]) => {
         await pause(200);
     }
 
-    if (!networkManager.getCxn(undefined, opts.remoteIp)) {
+    if (!networkManager.getCxn(undefined, remoteIp)) {
         throw new Error("Lost connection with host");
     }
 
@@ -63,8 +60,5 @@ export const app: IApp = {
     label: "netstat",
     description: "Network controls",
     isIndexed: true,
-    exec: async (emitter: EventEmitter, [subCommand, ...argv]: string[]) => {
-        await netCommands.exec(subCommand, argv, emitter);
-        emitter.emit("end");
-    }
+    commands: netCommands
 };

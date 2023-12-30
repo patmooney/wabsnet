@@ -2,10 +2,17 @@ import net from "node:net";
 import fs from "node:fs";
 import { appsManger } from "./core";
 import EventEmitter from "node:events";
+import xpipe from "xpipe";
 
 // apps should be given an even emitter
 
-const sock = "/tmp/wabsnet";
+const parseData = (data: string) => {
+    const options = data.match(/{.*}/)?.at(0);
+    const commands = data.replace(/ {.*}/, "").split(" ").map(command => command.trim());
+    return { commands, options: options ? JSON.parse(options) : {} };
+};
+
+const sock = xpipe.eq("/tmp/wabsnet");
 const server = net.createServer({ keepAlive: true }, (c) => {
     const emitter = new EventEmitter();
     console.log("client connected");
@@ -15,12 +22,17 @@ const server = net.createServer({ keepAlive: true }, (c) => {
         c.end();
     });
     c.on("data", async (d) => {
-        const data = d.toString().trim();
-        const [app, ...argv] = data.split(" ");
+        const data = parseData(d.toString().trim());
         emitter.on("msg", (text) => c.write(JSON.stringify([null, Buffer.from(text).toString("base64")])));
         emitter.on("end", () => c.end());
         emitter.on("error", (err) => c.write(JSON.stringify([err, null])));
-        appsManger.execApp(app, argv, emitter);
+        const app = data.commands.shift();
+        if (!app) {
+            emitter.emit("error", "Command not recognised");
+            emitter.emit("end");
+            return;
+        }
+        appsManger.execApp(app, data, emitter);
     });
 });
 

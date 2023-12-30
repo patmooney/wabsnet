@@ -10,3 +10,16 @@ export interface IFileContent {
         }
     }
 };
+
+export interface IContact {
+    username: string;
+    realName: string;
+    remoteIp: string;
+}
+
+export interface IChatThread {
+    text: string;
+    meta: {
+        isUser: boolean;
+    }
+}
