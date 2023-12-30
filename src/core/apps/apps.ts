@@ -1,18 +1,17 @@
+import EventEmitter from "node:events";
 import { appsManger } from "../../core";
 import { IApp } from "../../managers/apps";
-import { cat } from "../../utils/cat";
 
 export const app: IApp = {
     name: "apps",
     label: "Apps",
     isIndexed: false,
-    exec: () => {
+    exec: (emitter: EventEmitter) => {
         const apps = appsManger.listApps();
-        const text = apps
+        const appList = apps
             .filter(app => app.isIndexed)
-            .map(app => `${app.name}              ${app.description ?? '-'}`)
-            .join("\n");
-        console.log("\n\nList of available applications...");
-        return cat(text);
+            .map(app => ({ name: app.name, label: app.label, description: app.description }));
+        emitter.emit("msg", JSON.stringify(appList));
+        emitter.emit("end");
     }
 };

@@ -1,8 +1,9 @@
 // http://www.crypto-it.net/eng/simple/rail-fence-cipher.html
 
 import { ICipherOutput, encodingType, randomEncoding } from ".";
+import { CipherFn } from "../../managers/cipher";
 
-export const cipher = (text: string, encoding?: encodingType): ICipherOutput => {
+export const cipher: CipherFn = (text: string, encoding?: encodingType): ICipherOutput => {
     encoding = encoding ?? randomEncoding();
     const key = Math.round(Math.random() * 10) + 3;
     const rails: string[][] = [];

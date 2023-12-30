@@ -1,9 +1,10 @@
-import { ICipherOutput, randomEncoding } from ".";
+import { ICipherOutput, encodingType, randomEncoding } from ".";
+import { CipherFn } from "../../managers/cipher";
 import { cycle, shuffle } from "../array";
 
 type cipherRules = { [key: string]: { cycle: () => string, subs: string[] } };
 
-export const cipher = (text: string, encoding?: ICipherOutput["encoding"]): ICipherOutput => {
+export const cipher: CipherFn = (text: string, encoding?: encodingType): ICipherOutput => {
     // random encoding
     encoding = encoding ?? randomEncoding();
     const ascii = new Array(94).fill(null).map((_, idx) => String.fromCharCode(idx + 32)) as string[];

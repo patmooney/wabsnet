@@ -1,0 +1,12 @@
+{
+    "177.110.96.3": {
+        "list": ["private.txt", "junk.dat"],
+        "content": {
+            "private.txt": {
+                "mimeType": "plain/text",
+                "fileName": "private.txt",
+                "content": "dGhpcyBpcyBhIHRlc3Q="
+            }
+        }
+    }
+}

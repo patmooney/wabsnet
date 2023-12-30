@@ -1,3 +1,4 @@
+import EventEmitter from "node:events";
 import { AppNotFoundError } from "../errors";
 import { CommandExecFn } from "./commands";
 
@@ -20,12 +21,18 @@ export class AppsManager {
         this.appMap.set(appName, app);
     }
 
-    public execApp(appName: string, argv: string[]): Promise<void> {
-        const app = this.appMap.get(appName);
-        if (!app) {
-            throw new AppNotFoundError(appName);
+    public async execApp(appName: string, argv: string[], emitter: EventEmitter): Promise<void> {
+        try {
+            const app = this.appMap.get(appName);
+            if (!app) {
+                throw new AppNotFoundError(appName);
+            }
+            const result = await app.exec(emitter, argv);
+            return result;
+        } catch (e) {
+            console.error(e);
+            emitter.emit("error", (e as Error).message);
         }
-        return app.exec(argv);
     }
 
     public listApps(): IApp[] {

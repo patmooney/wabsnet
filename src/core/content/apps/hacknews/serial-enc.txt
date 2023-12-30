@@ -1,0 +1,4 @@
+ - solve each packet simple cipher
+ - brute force the 4 letter encryption key to find phrase "Hello, World!"
+ - concat each encryption key to form a N*4 length pass-key (alpha-numeric, 36^4 permutations)
+ - pass-key can be used to access files on a computer

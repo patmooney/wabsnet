@@ -4,10 +4,10 @@ import { toAnsii } from "terminal-art";
 const pause = (ms = 100) =>
     new Promise(res => setTimeout(res, ms));
 
-export const catFile = async (fileName: string, isInteractive = false) => {
+export const catFile = async (fileName: string) => {
     const path = `./src/core/content/${fileName}`;
     const content = await fs.readFile(path);
-    return cat(content.toString(), isInteractive);
+    return content.toString();
 }
 
 export const cat = async (content: string, isInteractive = false) => {
@@ -22,8 +22,7 @@ export const cat = async (content: string, isInteractive = false) => {
     console.log("\n\n" + content + "\n\n");
 }
 
-export const catImage = async (fileName: string, isInteractive = false, maxCharWidth = 100) => {
+export const catImage = async (fileName: string,  maxCharWidth = 100) => {
     const path = `./src/core/content/${fileName}`;
-    const ansii = await toAnsii(path, { maxCharWidth });
-    return cat(ansii, isInteractive);
+    return toAnsii(path, { maxCharWidth });
 }

@@ -1,9 +1,10 @@
 import { ICipherOutput, encodingType, randomEncoding } from ".";
+import { CipherFn } from "../../managers/cipher";
 
 // printable ascii range: 32 - 126
 // therefor max print range = 32 + 94
 
-export const cipher = (text: string, encoding?: encodingType, offset?: number): ICipherOutput => {
+export const cipher: CipherFn = (text: string, encoding?: encodingType, offset?: number): ICipherOutput => {
     // random encoding
     encoding = encoding ?? randomEncoding();
     // clamp given or random number betwen 1 and 127
