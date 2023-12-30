@@ -17,6 +17,12 @@ export interface IContact {
     remoteIp: string;
 }
 
+export interface IContactList {
+    name: string;
+    details: string;
+    username: string;
+}
+
 export interface IChatThread {
     text: string;
     meta: {

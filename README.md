@@ -99,3 +99,37 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
 - Electron App to give some sort of user-friendly presentable front-end to the goings-on, could display money, threat level, emails, active connections
 - Main story acts as a tutorial, all other facets should be dynamically generated.
 - App should give web addresses to local html files which require scraping, or can just host it on 127.0.0.1, maybe the site can have vulnerabilities built into it?
+- User will need to open a bank account, which they will receive a bank-key that resides on their own virtual file storage (in-game). This file is required to access any money
+- Users will have to keep their private files secure using "hard to compute, simple to verify" tasks (https://matt-rickard.com/hard-to-compute-simple-to-verify)
+
+### STORY
+
+ - Find news article about hacking activity
+ - Contact journalist
+ - Compromise journalist computer
+ - Get contact list
+ - Find details of each contact to identify short-list for potential hackers
+ - Search on dark-webz forums for matching usernames
+ - Recieve email from anon claiming to help find hacker if you complete a task
+ - Task involves compromising a business to get a list of users, requires a programming task
+ - Email list to anon
+ - Get pointed to a secret dark-webz site
+ - locate hacker
+ - get given key to access online file storage for users (each requires programming task) (i.e. look at common interview tasks for inspiration). Maybe you need to write code which looks like:
+```
+    // My task - sort words in string by their character count, complete 10 times within 1s
+    const sortWords = (str) => { ... }
+    const str = wabsnet.send("task start 2abd442dfcs2");
+    await wabsnet.send(`task end 2abd442dfcs2 ${JSON.stringify({ answer: sortWords(str) })}`);
+
+    // Should spend some time finding examples of tasks which are HARD to compute but EASY to verify, that way we can generate and verify faster than an answer can be given
+```
+ - Get blackmailed for crypto
+ - Create wallet (store wallet on virtual machine (i.e. in-game))
+ - Introduction to automated money production, watch connected users to compromised business, hack them, look for crypto wallets (random)
+ - Ends up with your wallet being stolen by the hacker who blackmails you
+ - Get contacted by a security expert that has been watching you
+ - Introduction to computer security (hard to compute, easy to verify)
+ - Generate more wealth
+ - Pay off hacker
+ - etc...
