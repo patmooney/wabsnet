@@ -9,12 +9,12 @@
     yarn cmd [cmd-name] [sub-command | args]
 
  - news
- - chat search --name="<full-name>"
- - chat chat --username=<username>
+ - chat search --name="[the full name]"
+ - chat chat --username=[username]
  - netstat scan
- - netstat trace --remoteIp=<ip>
- - file list --remoteIp=<ip> --token=<token>
- - file copy --remoteIp=<ip> --token=<token> --fileName=<file-name>
+ - netstat trace --remoteIp=[ip]
+ - file list --remoteIp=[ip] --token=[token]
+ - file copy --remoteIp=[ip] --token=[token] --fileName=[file-name]
 
 Token can be gained by solving coding challenges outputted by `trace`, or just use `test` as the token.
 
