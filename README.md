@@ -22,6 +22,7 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
 
 - Create a new app
 
+```
     // ./src/core/apps/example.ts
     import { networkManager } from "../../core";
     import { CommandManager } from "../../managers/commands";
@@ -65,6 +66,8 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
         isIndexed: true,
         commands
     };
+
+```
 
 - Add it to `./src/core.ts`
 - TODO: apps-store should allow users to choose the apps they have installed.
