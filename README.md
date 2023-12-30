@@ -70,6 +70,7 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
 ```
 
 - Add it to `./src/core.ts`
+- Call it `yarn cmd example helloName --name="Johnny Big Bollocks"`
 - TODO: apps-store should allow users to choose the apps they have installed.
 
 ### TODO
