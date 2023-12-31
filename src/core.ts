@@ -1,31 +1,25 @@
-import { AppsManager, IApp } from "./managers/apps";
-
-import { app as help } from "./core/apps/help";
-import { app as apps } from "./core/apps/apps";
-import { app as news } from "./core/apps/news";
-import { app as chat } from "./core/apps/chat";
-import { app as netstat } from "./core/apps/netstat";
-import { app as file } from "./core/apps/file";
+import { AppsManager } from "./managers/apps";
 
 import { NetworkManager } from "./managers/network";
+import { EmailManager } from "./managers/email";
+import { EventManager } from "./managers/events";
 
-// Init apps
+// Init Default Apps
+import apps from "./core/apps";
 export const appsManager = new AppsManager();
-const coreApps = [
-    help,
-    apps,
-    news,
-    chat,
-    netstat,
-    file
-];
-coreApps.forEach(
-    (app: IApp) => appsManager.addApp(app.name, app)
-);
+appsManager.addApp("help", apps.help);
+appsManager.addApp("apps", apps.apps);
 
 export const networkManager = new NetworkManager();
+export const emailManager = new EmailManager();
+export const eventManager = new EventManager();
+
+console.log("Loading events");
+eventManager.loadEvents();
 
 setInterval(() => {
     console.log("Pruning network resources");
     networkManager.prune();
-}, 60000)
+    console.log("Saving state");
+    eventManager.saveEvents();
+}, 60000);

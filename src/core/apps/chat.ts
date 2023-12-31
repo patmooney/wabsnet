@@ -6,7 +6,7 @@ import type { IChatThread, IContact } from "../content/types";
 
 import chatData from "../content/apps/chat/threads.json";
 import contactData from "../content/apps/chat/contact.json";
-const chats: { [key: string]: IChatThread[] } = chatData;
+const chats: { [key: string]: { [key: string]: IChatThread[] } } = chatData;
 const contacts: IContact[] = contactData;
 
 const CHAT_MESSAGE_DELAY = 5000;
@@ -37,7 +37,7 @@ const search = async (data: IData) => {
 };
 
 async function* chat (data:IData) {
-    const { username } = data.options;
+    const { username, subject } = data.options;
     if (!username) {
         throw new Error(`username is required`);
     }
@@ -47,10 +47,12 @@ async function* chat (data:IData) {
     if (!contact) {
         throw new Error (`user ${username} not found`);
     }
+    const threads = chats[username] ?? chats["*"];
+    const thread = threads[subject ?? "*"]
+        ?? [{"text": "I don't know anything about that.", "meta": { "isUser": false }}];
     try {
         networkManager.addActive("chat", contact.remoteIp);
-        const threads = chats[username] ?? chats["*"];
-        for (let d of threads) {
+        for (let d of thread) {
             yield d;
             await pause(CHAT_MESSAGE_DELAY);
         }
@@ -98,4 +100,5 @@ Usage: chat chat {"username": "example"}
 Args:
 
     username    String, required.
+    subject     String, optional. If there is something specific to talk about.
 `);

@@ -1,0 +1,12 @@
+{
+    "aaedba66-136e-403a-958f-075c6097cb87": {
+        "type": "email",
+        "id": "aaedba66-136e-403a-958f-075c6097cb87",
+        "content": {
+            "id": "b63e5e50-ae9e-4d64-85b4-011fd4295fe6",
+            "sender": "kafka89@wabmail.net",
+            "text": "Such and such...",
+            "isRead": false
+        }
+    }
+}

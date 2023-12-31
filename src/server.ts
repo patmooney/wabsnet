@@ -32,17 +32,23 @@ async function run() {
             c.end();
         });
         c.on("data", async (d) => {
-            const data = parseData(d.toString().trim());
-            emitter.on("msg", (text) => c.write(JSON.stringify([null, Buffer.from(text).toString("base64")])));
-            emitter.on("end", () => c.end());
-            emitter.on("error", (err) => c.write(JSON.stringify([err, null])));
-            const app = data.commands.shift();
-            if (!app) {
-                emitter.emit("error", "Command not recognised");
+            try {
+                emitter.on("msg", (text) => c.write(JSON.stringify([null, Buffer.from(text).toString("base64")])));
+                emitter.on("end", () => c.end());
+                emitter.on("error", (err) => c.write(JSON.stringify([err, null])));
+                const data = parseData(d.toString().trim());
+                const app = data.commands.shift();
+                if (!app) {
+                    emitter.emit("error", "Command not recognised");
+                    emitter.emit("end");
+                    return;
+                }
+                appsManager.execApp(app, data, emitter);
+            } catch (e) {
+                console.error(e);
+                emitter.emit("error", "Error while processing request");
                 emitter.emit("end");
-                return;
             }
-            appsManager.execApp(app, data, emitter);
         });
     });
 
