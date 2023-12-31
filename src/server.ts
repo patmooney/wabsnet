@@ -7,16 +7,17 @@ import chalk from "chalk";
 import { handler } from "./server/request-handler";
 import { haltLoop, startLoop } from "./core";
 import { onExit } from "signal-exit";
+import { setup } from "./setup";
 
 const sock = xpipe.eq("/tmp/wabsnet");
 
 async function run() {
-    const logo = await catImage("logo.png", 60);
     console.log("\n\n");
-    console.log(logo);
+    console.log(await catImage("logo.png", 60));
     console.log(chalk.green.bold("\n\n                    WABSNET v.1.933"));
     console.log("\n\n");
 
+    setup();
     startLoop();
 
     const server = net.createServer({ keepAlive: true }, (c: Socket) => {

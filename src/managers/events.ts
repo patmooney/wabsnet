@@ -2,7 +2,6 @@ import { randomUUID } from "node:crypto";
 import type { IEmail } from "./email"
 import { deserialize, serialize } from "node:v8";
 import fs from "node:fs/promises";
-import apps from "../core/apps";
 
 import eventsJson from "../core/content/events/events.json";
 const events = eventsJson as unknown as { [key: string]: IEvent };
@@ -11,7 +10,8 @@ import { appsManager, emailManager } from "../core";
 
 export enum EventType {
     email,
-    app_installed
+    app_installed,
+    app_removed
 }
 
 export type IEvent_Email = {
@@ -26,7 +26,9 @@ export type IEvent_AppInstall = {
     content: { appName: string }
 };
 
-export type IEvent = IEvent_Email | IEvent_AppInstall;
+export type IEvent_AppRemove = Omit<IEvent_AppInstall, "type"> & { type: EventType.app_removed };
+
+export type IEvent = IEvent_Email | IEvent_AppInstall | IEvent_AppRemove;
 
 const SAVE_LOCATION = "./sav.dat";
 
@@ -52,7 +54,10 @@ export class EventManager {
                 emailManager.addEmail(event.content);
                 break;
             case EventType.app_installed:
-                appsManager.addApp(event.content.appName, apps[event.content.appName]);
+                appsManager.installApp(event.content.appName);
+                break;
+            case EventType.app_removed:
+                appsManager.removeApp(event.content.appName);
                 break;
             default:
                 throw new Error(`Unknown event type "${eventType}"`);

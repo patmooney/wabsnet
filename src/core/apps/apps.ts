@@ -2,7 +2,6 @@ import { appsManager, eventManager } from "../../core";
 import { IApp, IData } from "../../managers/apps";
 import { CommandExecFn, CommandManager } from "../../managers/commands";
 import { EventType, IEvent_AppInstall } from "../../managers/events";
-import apps from "./";
 
 const appsCommands = new CommandManager();
 
@@ -18,19 +17,16 @@ Commands:
     install    Install an app.
 `;
 
-const list: CommandExecFn = () => {
-    const appList = Object.values(apps)
-        .filter(app => app.isIndexed)
+export const list: CommandExecFn = () =>
+    appsManager.listAvailable()
         .map(app => ({ name: app.name, label: app.label, description: app.description }));
-    return appList;
-};
 
-const install: CommandExecFn = (data: IData) => {
+export const install: CommandExecFn = (data: IData) => {
     const { appName } = data.options;
     if (!appName) {
         throw new Error("appName is required");
     }
-    if (appsManager.listApps().find(app => app.name === appName)) {
+    if (appsManager.listInstalled().find(app => app.name === appName)) {
         throw new Error(`${appName} already installed`);
     }
     eventManager.triggerEvent(

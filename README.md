@@ -106,6 +106,7 @@ All command should have help provided. Try using `yarn cmd help` to get started.
 - App should give web addresses to local html files which require scraping, or can just host it on 127.0.0.1, maybe the site can have vulnerabilities built into it?
 - User will need to open a bank account, which they will receive a bank-key that resides on their own virtual file storage (in-game). This file is required to access any money
 - Users will have to keep their private files secure using "hard to compute, simple to verify" tasks (https://matt-rickard.com/hard-to-compute-simple-to-verify)
+- Stop using console._whatever_ to output info, switch to a logger with levels. Silence for tests.
 
 ### STORY
 

@@ -14,6 +14,7 @@ export interface IApp {
     commands: CommandManager;
     description?: string;
     help?: string;
+    isInstalled?: boolean;
 }
 
 export class AppsManager {
@@ -23,14 +24,30 @@ export class AppsManager {
         this.appMap = new Map<string, IApp>();
     }
 
-    public addApp(appName: string, app: IApp): void {
-        this.appMap.set(appName, app);
+    public addApp(app: IApp): void {
+        this.appMap.set(app.name, app);
+    }
+
+    public installApp(appName: string): void {
+        const app = this.appMap.get(appName);
+        if (!app) {
+            throw new Error(`${appName} not found`);
+        }
+        app.isInstalled = true;
+    }
+
+    public removeApp(appName: string): void {
+        const app = this.appMap.get(appName);
+        if (!app) {
+            throw new Error(`${appName} not found`);
+        }
+        app.isInstalled = false;
     }
 
     public async execApp(appName: string, data: IData, emitter: EventEmitter): Promise<void> {
         try {
             const app = this.appMap.get(appName);
-            if (!app) {
+            if (!app || !app.isInstalled) {
                 throw new AppNotFoundError(appName);
             }
             const subCommand = data.commands.shift() ?? "default";
@@ -49,6 +66,14 @@ export class AppsManager {
 
     public listApps(): IApp[] {
         return Array.from(this.appMap.values());
+    }
+
+    public listInstalled(): IApp[] {
+        return this.listApps().filter(app => app.isInstalled);
+    }
+
+    public listAvailable(): IApp[] {
+        return this.listApps().filter(app => !app.isInstalled && app.isIndexed);
     }
 }
 
