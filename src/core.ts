@@ -17,9 +17,20 @@ export const eventManager = new EventManager();
 console.log("Loading events");
 eventManager.loadEvents();
 
-setInterval(() => {
+const PERIODIC_FREQUENCY = 60_000;
+let loopId: NodeJS.Timeout;
+export const startLoop = () => {
+    loopId = setInterval(() => execPeriodicActions(), PERIODIC_FREQUENCY)
+};
+
+export const haltLoop = () => {
+    clearInterval(loopId);
+    return execPeriodicActions();
+};
+
+export const execPeriodicActions = async () => {
     console.log("Pruning network resources");
     networkManager.prune();
     console.log("Saving state");
-    eventManager.saveEvents();
-}, 60000);
+    await eventManager.saveEvents();
+}

@@ -73,12 +73,16 @@ export class EventManager {
     }
 
     async loadEvents() {
-        // load active events from save file and replay
-        const data = await fs.readFile(SAVE_LOCATION);
-        const eventSet: IEvent[] = deserialize(data);
+        try {
+            // load active events from save file and replay
+            const data = await fs.readFile(SAVE_LOCATION);
+            const eventSet: IEvent[] = deserialize(data);
 
-        Array.from(eventSet).forEach(
-            (evt) => this.triggerEvent(evt)
-        );
+            Array.from(eventSet).forEach(
+                (evt) => this.triggerEvent(evt)
+            );
+        } catch (err) {
+            console.error("Unable to load save", err);
+        }
     }
 }

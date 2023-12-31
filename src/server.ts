@@ -1,18 +1,12 @@
-import net from "node:net";
+import net, { Socket } from "node:net";
 import fs from "node:fs";
-import { appsManager } from "./core";
 import EventEmitter from "node:events";
 import xpipe from "xpipe";
 import { catImage } from "./utils/cat";
 import chalk from "chalk";
-
-// apps should be given an even emitter
-
-const parseData = (data: string) => {
-    const options = data.match(/{.*}/)?.at(0);
-    const commands = data.replace(/ {.*}/, "").split(" ").map(command => command.trim());
-    return { commands, options: options ? JSON.parse(options) : {} };
-};
+import { handler } from "./server/request-handler";
+import { haltLoop, startLoop } from "./core";
+import { onExit } from "signal-exit";
 
 const sock = xpipe.eq("/tmp/wabsnet");
 
@@ -23,7 +17,9 @@ async function run() {
     console.log(chalk.green.bold("\n\n                    WABSNET v.1.933"));
     console.log("\n\n");
 
-    const server = net.createServer({ keepAlive: true }, (c) => {
+    startLoop();
+
+    const server = net.createServer({ keepAlive: true }, (c: Socket) => {
         const emitter = new EventEmitter();
         console.log("client connected");
         c.on("end", () => {
@@ -32,23 +28,7 @@ async function run() {
             c.end();
         });
         c.on("data", async (d) => {
-            try {
-                emitter.on("msg", (text) => c.write(JSON.stringify([null, Buffer.from(text).toString("base64")])));
-                emitter.on("end", () => c.end());
-                emitter.on("error", (err) => c.write(JSON.stringify([err, null])));
-                const data = parseData(d.toString().trim());
-                const app = data.commands.shift();
-                if (!app) {
-                    emitter.emit("error", "Command not recognised");
-                    emitter.emit("end");
-                    return;
-                }
-                appsManager.execApp(app, data, emitter);
-            } catch (e) {
-                console.error(e);
-                emitter.emit("error", "Error while processing request");
-                emitter.emit("end");
-            }
+            handler(c, emitter, d);
         });
     });
 
@@ -73,7 +53,12 @@ async function run() {
     server.listen(sock, () => {
         console.log(`listening to ${sock}`);
     });
-    process.on("beforeExit", () => server.close());
+
+    onExit(() => {
+        server.close();
+        haltLoop().then(() => process.exit(0));
+        return true;
+    });
 }
 
 run();
