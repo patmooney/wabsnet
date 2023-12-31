@@ -3,11 +3,10 @@ import { CommandManager } from "../../managers/commands";
 import { pause } from "../../utils/pause";
 import { networkManager } from "../../core";
 import type { IChatThread, IContact } from "../content/types";
+import { loadJSON } from "../../utils/resource";
 
-import chatData from "../content/apps/chat/threads.json";
-import contactData from "../content/apps/chat/contact.json";
-const chats: { [key: string]: { [key: string]: IChatThread[] } } = chatData;
-const contacts: IContact[] = contactData;
+const chats = loadJSON<{ [key: string]: { [key: string]: IChatThread[] } }>("apps/chat/threads.json");
+const contacts = loadJSON<IContact[]>("apps/chat/contact.json");
 
 const CHAT_MESSAGE_DELAY = 5000;
 const chatCommands = new CommandManager();
@@ -26,7 +25,7 @@ Commands:
 
 const search = async (data: IData) => {
     const { username, realName, remoteIp } = data.options;
-    const matches = contacts.filter(
+    const matches = (await contacts).filter(
         (contact) => {
             return username ? contact.username === username : true
                 && realName ? contact.realName === realName : true
@@ -41,13 +40,13 @@ async function* chat (data:IData) {
     if (!username) {
         throw new Error(`username is required`);
     }
-    const contact = contacts.find(
+    const contact = (await contacts).find(
         (contact) => contact.username === username
     );
     if (!contact) {
         throw new Error (`user ${username} not found`);
     }
-    const threads = chats[username] ?? chats["*"];
+    const threads = (await chats)[username] ?? (await chats)["*"];
     const thread = threads[subject ?? "*"]
         ?? [{"text": "I don't know anything about that.", "meta": { "isUser": false }}];
     try {

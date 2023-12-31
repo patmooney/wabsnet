@@ -16,6 +16,9 @@ export const setup = () => {
     appsManager.addApp(netstat);
     appsManager.addApp(news);
 
+    appsManager.installApp("apps");
+    appsManager.installApp("help");
+
     console.log("Loading events");
     eventManager.loadEvents();
 };

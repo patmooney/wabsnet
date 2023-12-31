@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 import type { IEmail } from "./email"
 import { deserialize, serialize } from "node:v8";
 import fs from "node:fs/promises";
+import { loadJSON } from "../utils/resource";
 
-import eventsJson from "../core/content/events/events.json";
-const events = eventsJson as unknown as { [key: string]: IEvent };
+const events = loadJSON<{ [key: string]: IEvent }>("events/events.json");
 
 import { appsManager, emailManager } from "../core";
 
@@ -39,8 +39,8 @@ export class EventManager {
         this.eventSet = new Set<IEvent>();
     }
 
-    triggerEventId(eventId: keyof typeof events) { 
-        const event = events[eventId];
+    async triggerEventId(eventId: string) { 
+        const event = (await events)[eventId];
         if (!event) {
             throw new Error(`Unknown event ${eventId}`);
         }
