@@ -10,7 +10,7 @@ import { app as file } from "./core/apps/file";
 import { NetworkManager } from "./managers/network";
 
 // Init apps
-export const appsManger = new AppsManager();
+export const appsManager = new AppsManager();
 const coreApps = [
     help,
     apps,
@@ -20,7 +20,7 @@ const coreApps = [
     file
 ];
 coreApps.forEach(
-    (app: IApp) => appsManger.addApp(app.name, app)
+    (app: IApp) => appsManager.addApp(app.name, app)
 );
 
 export const networkManager = new NetworkManager();

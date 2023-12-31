@@ -2,7 +2,7 @@ import { IApp } from "../../managers/apps";
 import { catFile } from "../../utils/cat";
 import { CommandExecFn, CommandManager } from "../../managers/commands";
 
-const exec: CommandExecFn = async () => catFile("apps/news/article.txt");
+const exec: CommandExecFn = async () => ({ news: await catFile("apps/news/article.txt") });
 
 const newsCommands = new CommandManager();
 newsCommands.registerCommand("default", exec);

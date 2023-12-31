@@ -10,6 +10,19 @@ const chats: { [key: string]: IChatThread[] } = chatData;
 const contacts: IContact[] = contactData;
 
 const CHAT_MESSAGE_DELAY = 5000;
+const chatCommands = new CommandManager();
+
+const help = `chat
+
+Basic private messaging tool
+
+Usage: chat chat { "username": "example-user" }
+
+Commands:
+
+    search    Use filters to find details of matching users.
+    chat      Initiate a private messaging session with the given user.
+`;
 
 const search = async (data: IData) => {
     const { username, realName, remoteIp } = data.options;
@@ -46,14 +59,43 @@ async function* chat (data:IData) {
     }
 }
 
-const chatCommands = new CommandManager();
-chatCommands.registerCommand("search", search);
-chatCommands.registerCommand("chat", chat);
-
 export const app: IApp = {
     name: "chat",
     isIndexed: true,
     label: "WeChat",
     description: "Distributed direct messaging",
-    commands: chatCommands
+    commands: chatCommands,
+    help
 };
+
+/** COMMAND REGISTRATION + HELP */
+
+chatCommands.registerCommand(
+    "search",
+    search,
+    `chat search
+
+Use filters to find details of matching users.
+
+Usage: chat search [args?]
+
+Args:
+
+    username    String, optional.
+    realName    String, optional.
+    remoteIp    String, optional.
+`);
+
+chatCommands.registerCommand(
+    "chat",
+    chat,
+    `chat chat
+
+Initiate a private chat session with the given username
+
+Usage: chat chat {"username": "example"}
+
+Args:
+
+    username    String, required.
+`);

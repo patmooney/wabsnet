@@ -1,6 +1,6 @@
 import net from "node:net";
 import fs from "node:fs";
-import { appsManger } from "./core";
+import { appsManager } from "./core";
 import EventEmitter from "node:events";
 import xpipe from "xpipe";
 import { catImage } from "./utils/cat";
@@ -42,7 +42,7 @@ async function run() {
                 emitter.emit("end");
                 return;
             }
-            appsManger.execApp(app, data, emitter);
+            appsManager.execApp(app, data, emitter);
         });
     });
 

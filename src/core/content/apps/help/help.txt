@@ -1,7 +1,17 @@
 wabsnet interface v1.933
 
-Usage: wabsnet [command]
+Usage:
 
-Commands:
- - help               Display this text
- - apps               List, install, remove and interact with applications.
+    wabsnet [app] [command? [args?]]
+
+[args] are expressed as JSON, an example command might be:
+
+    wabsnet game play {"username": "leeroy"}
+
+To list available applications:
+
+    wabsnet help list-apps
+
+To list all available commands:
+
+    wabsnet help list-commands

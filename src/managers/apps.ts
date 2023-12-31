@@ -13,6 +13,7 @@ export interface IApp {
     isIndexed: boolean;
     commands: CommandManager;
     description?: string;
+    help?: string;
 }
 
 export class AppsManager {
@@ -32,7 +33,13 @@ export class AppsManager {
             if (!app) {
                 throw new AppNotFoundError(appName);
             }
-            await app.commands.exec(data.commands.shift() ?? "default", data, emitter);
+            const subCommand = data.commands.shift() ?? "default";
+            const help = app.help ?? "No help available";
+            if (subCommand === "help" || !app.commands.hasCommand(subCommand)) {
+                emitter.emit("msg", JSON.stringify({ help }));
+            } else {
+                await app.commands.exec(subCommand, data, emitter);
+            }
             emitter.emit("end");
         } catch (e) {
             console.error(e);

@@ -25,7 +25,16 @@ const client = net.createConnection({ path: sock }, () => {
             client.end();
         } else {
             const content = Buffer.from(msg, "base64").toString();
-            console.log(content);
+            try {
+                const json = JSON.parse(content);
+                if (json.help) {
+                    console.log(json.help);
+                } else {
+                    console.log(json);
+                }
+            } catch (e) {
+                console.log(content);
+            }
         }
     });
     client.write(data);

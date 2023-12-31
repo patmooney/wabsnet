@@ -4,6 +4,18 @@ import { networkManager } from "../../core";
 import { IFileContent } from "../content/types";
 const fileData = require("../content/apps/file/list.json") as IFileContent;
 
+const fileCommands = new CommandManager();
+
+const help = `file
+
+Remote file tools
+
+Commands:
+
+    list    List files on the remote device.
+    copy    Retrieve the contents of a remote file.
+`;
+
 const list: CommandExecFn = (data: IData) => {
     const { remoteIp, token } = data.options;
     if (!remoteIp || !token) {
@@ -31,14 +43,44 @@ const copy: CommandExecFn = (data: IData) => {
     return content;
 }
 
-const fileCommands = new CommandManager();
-fileCommands.registerCommand("list", list);
-fileCommands.registerCommand("copy", copy);
-
 export const app: IApp = {
     name: "file",
     label: "File",
     description: "Remote file actions",
     isIndexed: true,
-    commands: fileCommands
+    commands: fileCommands,
+    help
 };
+
+/** COMMAND REGISTRATION + HELP **/
+
+fileCommands.registerCommand(
+    "list", list,
+    `file list
+
+List files on the remove device
+
+Usage: file list {"remoteIp": "111.111.111.111", "token": "example-token"}
+
+Args:
+
+    remoteIp    String, required. IP for remote device.
+    token       String, required. Authentication token for remote device.
+`);
+
+fileCommands.registerCommand(
+    "copy", copy,
+    `file copy
+
+Retrieve the contents of a remote file.
+
+Usage: file copy {"remoteIp": "111.111.111.111", "token": "example-token", "fileName": "the-file-name.txt"}
+
+Args:
+
+    remoteIp    String, required. IP for remote device.
+    token       String, required. Authentication token for remote device.
+    fileName    String, required. Name of file from which to retrieve contents.
+`);
+
+
