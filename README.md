@@ -18,6 +18,10 @@
 
 Token can be gained by solving coding challenges outputted by `trace`, or just use `test` as the token.
 
+### Help
+
+All command should have help provided. Try using `yarn cmd help` to get started.
+
 ### Add a new application
 
 - Create a new app
@@ -80,6 +84,7 @@ Token can be gained by solving coding challenges outputted by `trace`, or just u
    - ~~download all/files of interest~~
    - some files may be too large to download in the time window requiring further key decrypting
    - this all leads to the user having to write fully automated code (and perhaps interface?)
+- Applications should be installed manually, should start with only apps and help?
 - Files on the user's computer may be a huge quantity of people's information which will need to be looked up online to identify a target
 - Should be other ways in order to access IP address for other users.
 - Maybe an online resource like a audio streaming site can be compromised and you can port-tunner through it to track user data packets
