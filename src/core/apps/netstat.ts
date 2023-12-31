@@ -10,6 +10,20 @@ import { cipher as brute } from "../../utils/cipher/brute";
 import { cycle } from "../../utils/array";
 import { CipherFn } from "../../managers/cipher";
 
+const netCommands = new CommandManager();
+
+const help = `netstat
+
+Networking tools.
+
+Usage: netstat [command] [args?]
+
+Commands:
+
+    scan     List of current active connections by application.
+    trace    Display raw traffic by given remote-ip.
+`;
+
 const scan = () => networkManager.getActive();
 
 async function* trace (data: IData) {
@@ -41,14 +55,36 @@ async function* trace (data: IData) {
     }
 };
 
-const netCommands = new CommandManager();
-netCommands.registerCommand("scan", scan);
-netCommands.registerCommand("trace", trace);
 
 export const app: IApp = {
     name: "netstat",
     label: "netstat",
     description: "Network controls",
     isIndexed: true,
-    commands: netCommands
+    commands: netCommands,
+    help
 };
+
+/** COMMAND REGISTRATION + HELP **/
+
+netCommands.registerCommand(
+    "scan", scan,
+    `netstat scan
+
+List of current active connections by application.
+
+Usage: netstat scan
+`);
+
+netCommands.registerCommand(
+    "trace", trace,
+    `netstat trace
+
+Display raw traffic by given remote-ip.
+
+Usage: netstat trace {"remoteIp": "111.111.111.111"}
+
+Args:
+
+    remoteIp    String, required. Display packet data for this IP.
+`);
