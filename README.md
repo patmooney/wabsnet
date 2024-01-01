@@ -150,6 +150,8 @@ All command should have help provided. Try using `yarn cmd help` to get started.
  - Simultaneously, you need to be carrying out your actions via the remote machine (netstat scan/trace for ex.)
  - Businesses will have a website or similar which allows you to maintain a connection to trace traffic.
  - Create a new tool called webbot which continually creates traffic.
+ - Businesses will have varying customer numbers, customer difficulty and customer assets.
+ - The challenge comes from automating the maximum of customers you can attack and profit from.
 
 ```
 
