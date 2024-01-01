@@ -120,6 +120,22 @@ All command should have help provided. Try using `yarn cmd help` to get started.
 - Users will have to keep their private files secure using "hard to compute, simple to verify" tasks (https://matt-rickard.com/hard-to-compute-simple-to-verify)
 - Stop using console._whatever_ to output info, switch to a logger with levels. Silence for tests.
 
+### Contracts
+
+- Contracts from the _darkwebz_ will be an avenure for unlocking more mechanics and wealth generation.
+- I.e. A contract will provide a target, the target may have a new/unfamilliar cipher or app requirement.
+
+### Ciphers
+
+- Main progression mechanic
+- Programming tasks which need to be added to your hacking tool-kit and optimised.
+
+### Apps
+
+- Apps can be installed from the `apps` tool. Some apps are not indexed so will not show in the `list` command.
+- Some apps should be related to the players progression to prevent people from installing them too early.
+- An app gives you a way to contact/scrape/connect targets. I.e. `webbot` might be an example which continually makes requests to a website to capture traffic.
+
 ### STORY
 
  - Find news article about hacking activity
