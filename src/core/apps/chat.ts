@@ -2,7 +2,7 @@ import { IApp, IData } from "../../managers/apps";
 import { CommandManager } from "../../managers/commands";
 import { pause } from "../../utils/pause";
 import { networkManager } from "../../core";
-import type { IChatThread, IContact } from "../content/types";
+import type { IChatThread, IContact } from "../content-types";
 import { loadJSON } from "../../utils/resource";
 
 const chats = loadJSON<{ [key: string]: { [key: string]: IChatThread[] } }>("apps/chat/threads.json");

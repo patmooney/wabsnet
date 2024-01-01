@@ -1,7 +1,7 @@
 import { IApp, IData } from "../../managers/apps";
 import { CommandExecFn, CommandManager } from "../../managers/commands";
 import { networkManager } from "../../core";
-import { IFileContent } from "../content/types";
+import { IFileContent } from "../content-types";
 import { loadJSON } from "../../utils/resource";
 
 const files = loadJSON<IFileContent>("apps/file/list.json");

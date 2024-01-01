@@ -9,6 +9,7 @@
         "build": "yarn build:ts",
         "build:ts": "tsc -p ./tsconfig.build.json"
     },
+    "bin": "./dist/server.js",
     "keywords": [],
     "author": "",
     "license": "ISC",

@@ -23,6 +23,5 @@
         ]
     },
     "exclude": ["node_modules"],
-    "include": ["src/**/*.ts", "tests/**/*.ts", "bin/**/*.ts"],
-    "files":  ["src/schema/zapatos/schema.d.ts"]
+    "include": ["src/**/*.ts", "tests/**/*.ts", "bin/**/*.ts"]
 }
