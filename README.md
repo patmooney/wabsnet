@@ -77,6 +77,18 @@ All command should have help provided. Try using `yarn cmd help` to get started.
 - Call it `yarn cmd example helloName --name="Johnny Big Bollocks"`
 - TODO: apps-store should allow users to choose the apps they have installed.
 
+### Core Mechanics
+
+- Carry out programming tasks to automate a complex hacking tool which generates wealth.
+- The hacking tool will grow in complexity as more ciphers and attack _vectors_ are made available/discovered.
+- Attack targets can have assets in $money or in $crypto.
+- $crypto value will fluctuate creating more avenues for wealth generation/automation.
+- Targets will vary greatly in their difficulty + value.
+- Difficulty is given as their elusiveness: i.e. how can you find/execute attacks. And the complexity of ciphers requiered to decode their `token`
+- **Businesses** are a means to attack customers, by compromising a business you can track remote traffic via their system.
+- Business IPs can be gained from purchasing on the _darkwebz_ (perhaps with an additional key to stop people just scanning IPs)
+- Game is completed 100% by gaining 100% efficiency, having all buinesses compromised and having all customers of those businesses automatically attacked.
+
 ### TODO
 
 - Once you have gained temporary access to a user's computer you need to:
