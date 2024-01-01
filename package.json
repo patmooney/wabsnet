@@ -5,7 +5,9 @@
     "scripts": {
         "test": "NODE_ENV=test jest",
         "start": "ts-node src/server.ts",
-        "cmd": "ts-node bin/send-command.ts"
+        "cmd": "ts-node bin/send-command.ts",
+        "build": "yarn build:ts",
+        "build:ts": "tsc -p ./tsconfig.build.json"
     },
     "keywords": [],
     "author": "",

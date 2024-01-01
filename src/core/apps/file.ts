@@ -18,26 +18,26 @@ Commands:
 `;
 
 const list: CommandExecFn = async (data: IData) => {
-    const { remoteIp, token } = data.options;
-    if (!remoteIp || !token) {
-        throw new Error("remoteIp and token is required");
+    const { remoteHost, token } = data.options;
+    if (!remoteHost || !token) {
+        throw new Error("remoteHost and token is required");
     }
-    if (!networkManager.validateToken(remoteIp, token)) {
+    if (!networkManager.validateToken(remoteHost, token)) {
         throw new Error("Inavlid token");
     }
-    return (await files)[remoteIp]?.list ?? [];
+    return (await files)[remoteHost]?.list ?? [];
 };
 
 const copy: CommandExecFn = async (data: IData) => {
-    const { remoteIp, token, fileName } = data.options;
+    const { remoteHost, token, fileName } = data.options;
 
-    if (!remoteIp || !token || !fileName) {
-        throw new Error("remoteIp, token and fileName is required");
+    if (!remoteHost || !token || !fileName) {
+        throw new Error("remoteHost, token and fileName is required");
     }
-    if (!networkManager.validateToken(remoteIp, token)) {
+    if (!networkManager.validateToken(remoteHost, token)) {
         throw new Error("Inavlid token");
     }
-    const content = (await files)[remoteIp]?.content[fileName];
+    const content = (await files)[remoteHost]?.content[fileName];
     if (!content) {
         throw new Error(`File ${fileName} not found`);
     }
@@ -61,12 +61,12 @@ fileCommands.registerCommand(
 
 List files on the remove device
 
-Usage: file list {"remoteIp": "111.111.111.111", "token": "example-token"}
+Usage: file list {"remoteHost": "abcd:abcd:abcd:abcd:abcd:abcd:abcd:abcd", "token": "example-token"}
 
 Args:
 
-    remoteIp    String, required. IP for remote device.
-    token       String, required. Authentication token for remote device.
+    remoteHost    String, required. IPv6/Domain for remote device.
+    token         String, required. Authentication token for remote device.
 `);
 
 fileCommands.registerCommand(
@@ -75,13 +75,13 @@ fileCommands.registerCommand(
 
 Retrieve the contents of a remote file.
 
-Usage: file copy {"remoteIp": "111.111.111.111", "token": "example-token", "fileName": "the-file-name.txt"}
+Usage: file copy {"remoteHost": "abcd:abcd:abcd:abcd:abcd:abcd:abcd:abcd", "token": "example-token", "fileName": "the-file-name.txt"}
 
 Args:
 
-    remoteIp    String, required. IP for remote device.
-    token       String, required. Authentication token for remote device.
-    fileName    String, required. Name of file from which to retrieve contents.
+    remoteHost    String, required. IPv6/Domain for remote device.
+    token         String, required. Authentication token for remote device.
+    fileName      String, required. Name of file from which to retrieve contents.
 `);
 
 

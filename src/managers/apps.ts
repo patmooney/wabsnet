@@ -1,6 +1,7 @@
 import EventEmitter from "node:events";
 import { AppNotFoundError } from "../errors";
 import { CommandManager } from "./commands";
+import { logManager } from "../core";
 
 export interface IData {
     commands: string[];
@@ -57,10 +58,10 @@ export class AppsManager {
             } else {
                 await app.commands.exec(subCommand, data, emitter);
             }
-            emitter.emit("end");
         } catch (e) {
-            console.error(e);
+            logManager.stack(e as Error);
             emitter.emit("error", (e as Error).message);
+            emitter.emit("end");
         }
     }
 

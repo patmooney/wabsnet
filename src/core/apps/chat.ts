@@ -24,12 +24,12 @@ Commands:
 `;
 
 const search = async (data: IData) => {
-    const { username, realName, remoteIp } = data.options;
+    const { username, realName, remoteHost } = data.options;
     const matches = (await contacts).filter(
         (contact) => {
             return username ? contact.username === username : true
                 && realName ? contact.realName === realName : true
-                && remoteIp ? contact.remoteIp === remoteIp : true;
+                && remoteHost ? contact.remoteHost === remoteHost : true;
         }
     );
     return matches;
@@ -50,13 +50,13 @@ async function* chat (data:IData) {
     const thread = threads[subject ?? "*"]
         ?? [{"text": "I don't know anything about that.", "meta": { "isUser": false }}];
     try {
-        networkManager.addActive("chat", contact.remoteIp);
+        networkManager.addActive("chat", contact.remoteHost);
         for (let d of thread) {
             yield d;
             await pause(CHAT_MESSAGE_DELAY);
         }
     } finally {
-        networkManager.removeActive("chat", contact.remoteIp);
+        networkManager.removeActive("chat", contact.remoteHost);
     }
 }
 
@@ -82,9 +82,9 @@ Usage: chat search [args?]
 
 Args:
 
-    username    String, optional.
-    realName    String, optional.
-    remoteIp    String, optional.
+    username      String, optional.
+    realName      String, optional.
+    remoteHost    String, optional.
 `);
 
 chatCommands.registerCommand(

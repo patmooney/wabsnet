@@ -6,7 +6,7 @@ import { loadJSON } from "../utils/resource";
 
 const events = loadJSON<{ [key: string]: IEvent }>("events/events.json");
 
-import { appsManager, emailManager, notificationManager } from "../core";
+import { appsManager, emailManager, logManager, notificationManager } from "../core";
 import { INotification } from "./notifications";
 
 export enum EventType {
@@ -98,7 +98,7 @@ export class EventManager {
                 (evt) => this.triggerEvent(evt)
             );
         } catch (err) {
-            console.error("Unable to load save", err);
+            logManager.fatal(`Unable to load save: ${err}`);
         }
     }
 }

@@ -14,7 +14,7 @@ export interface IFileContent {
 export interface IContact {
     username: string;
     realName: string;
-    remoteIp: string;
+    remoteHost: string;
 }
 
 export interface IContactList {

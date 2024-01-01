@@ -6,6 +6,11 @@ import EventEmitter from "node:events";
 import { CommandNotFoundError, SubCommandNotSuppliedError } from "../errors";
 import { IData } from "./apps";
 
+// If a CommandExecFn returns this, then the oweness is entirely on the function
+// to maintain and properly terminate the connection.
+// Use sparingly! If more useful in general, find a nicer way.
+export const RemainConnected = Symbol();
+
 export const isCommandExecFn = (fn: CommandFnUnion): fn is CommandExecFn => {
     return !(fn instanceof CommandManager);
 };
@@ -18,7 +23,7 @@ export const isCommandManager = (fn: CommandFnUnion): fn is CommandManager => {
     return fn.constructor.name === "CommandManager";
 };
 
-export type CommandExecFn = ((data: IData) => Promise<any> | any);
+export type CommandExecFn = (data: IData, emitter: EventEmitter) => Promise<any> | any;
 export type CommandExecGenerator = (data: IData) => AsyncGenerator<any, void, unknown>;
 export type CommandFnUnion = CommandExecFn | CommandExecGenerator | CommandManager;
 
@@ -35,7 +40,6 @@ export class CommandManager {
     }
 
     public async exec(commandName: string, data: IData, emitter: EventEmitter): Promise<void> {
-        console.log(data.commands);
         const command = this.commandMap.get(commandName);
         if (!command) {
             throw new CommandNotFoundError(commandName);
@@ -59,7 +63,11 @@ export class CommandManager {
             }
             gen.return();
         } else if (isCommandExecFn(exec)) {
-            emitter.emit("msg", JSON.stringify(await exec(data)));
+            const out = await exec(data, emitter);
+            if (out === RemainConnected) {
+                return;
+            }
+            emitter.emit("msg", JSON.stringify(out));
         } else if (isCommandManager(exec)) {
             const subCommand = data.commands.shift();
             if (subCommand) {
@@ -71,6 +79,7 @@ export class CommandManager {
                 throw new SubCommandNotSuppliedError();
             }
         }
+        emitter.emit("end");
     }
 
     public listCommands(): string[] {

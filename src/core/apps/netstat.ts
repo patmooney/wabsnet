@@ -27,17 +27,17 @@ Commands:
 const scan = () => networkManager.getActive();
 
 async function* trace (data: IData) {
-    const { remoteIp } = data.options;
-    if (!remoteIp) {
-        throw new Error("remoteIp is required");
+    const { remoteHost } = data.options;
+    if (!remoteHost) {
+        throw new Error("remoteHost is required");
     }
 
     let i = 0;
     const ciphers = [trans, poly, rail, brute];
-    while (networkManager.getCxn(undefined, remoteIp)) {
-        let activeToken = networkManager.getActiveAccessTokens(remoteIp).at(0);
+    while (networkManager.getCxn(undefined, remoteHost)) {
+        let activeToken = networkManager.getActiveAccessTokens(remoteHost).at(0);
         if (!activeToken) {
-            activeToken = networkManager.addAccess(remoteIp);
+            activeToken = networkManager.addAccess(remoteHost);
         }
         const chunkSize = Math.ceil(activeToken.token.length / 8);
         const chunks = activeToken.token.match(new RegExp(`.{1,${chunkSize}}`, 'g'));
@@ -50,7 +50,7 @@ async function* trace (data: IData) {
         await pause(200);
     }
 
-    if (!networkManager.getCxn(undefined, remoteIp)) {
+    if (!networkManager.getCxn(undefined, remoteHost)) {
         throw new Error("Lost connection with host");
     }
 };
@@ -82,9 +82,9 @@ netCommands.registerCommand(
 
 Display raw traffic by given remote-ip.
 
-Usage: netstat trace {"remoteIp": "111.111.111.111"}
+Usage: netstat trace {"remoteHost": "abcd:abcd:abcd:acbd:acbd:acbd:acbd:abcd"}
 
 Args:
 
-    remoteIp    String, required. Display packet data for this IP.
+    remoteHost    String, required. Display packet data for this IPv6/Domain.
 `);

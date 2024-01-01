@@ -1,11 +1,10 @@
 import net, { Socket } from "node:net";
 import fs from "node:fs";
-import EventEmitter from "node:events";
 import xpipe from "xpipe";
 import { catImage } from "./utils/cat";
 import chalk from "chalk";
-import { handler } from "./server/request-handler";
-import { haltLoop, startLoop } from "./core";
+import { handler, setupEmitter } from "./server/request-handler";
+import { haltLoop, startLoop, logManager } from "./core";
 import { onExit } from "signal-exit";
 import { setup } from "./setup";
 
@@ -21,15 +20,15 @@ async function run() {
     startLoop();
 
     const server = net.createServer({ keepAlive: true }, (c: Socket) => {
-        const emitter = new EventEmitter();
-        console.log("client connected");
+        const emitter = setupEmitter(c);
+        logManager.debug("client connected");
         c.on("end", () => {
-            console.log("client disconnected");
+            logManager.debug("client disconnected");
             emitter.emit("close");
             c.end();
         });
         c.on("data", async (d) => {
-            handler(c, emitter, d);
+            handler(emitter, d);
         });
     });
 
@@ -40,19 +39,19 @@ async function run() {
                 if (e.code == 'ECONNREFUSED') {  // No other server listening
                     fs.unlinkSync(sock);
                     server.listen(sock, function() { //'listening' listener
-                        console.log('server recovered');
+                        logManager.debug('server recovered');
                     });
                 }
             });
             clientSocket.connect({path: sock}, function() {
-                console.log('Server running, giving up...');
+                logManager.fatal('Server running, giving up...');
                 process.exit();
             });
         }
     });
 
     server.listen(sock, () => {
-        console.log(`listening to ${sock}`);
+        logManager.info(`listening to ${sock}`);
     });
 
     onExit(() => {
