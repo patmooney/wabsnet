@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Jim's fish shop",
+        "keyLength": 10,
+        "customersPerSecond": 0.01,
+        "customerLifeSeconds": 60,
+        "customerAvgDifficulty": 1,
+        "customerDeviation": 1,
+        "customerValueMultiplier": 0.5
+    },
+    {
+        "name": "World Bank",
+        "keyLength": 200,
+        "customersPerSecond": 2,
+        "customerLifeSeconds": 10,
+        "customerAvgDifficulty": 4,
+        "customerDeviation": 5,
+        "customerValueMultiplier": 3
+    }
+]

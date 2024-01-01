@@ -163,3 +163,24 @@ All command should have help provided. Try using `yarn cmd help` to get started.
 
 ```
 
+
+### Business definition
+
+```
+    {
+        "name": "Jim's fish shop",
+        "keyLength": 10,
+        "customersPerSecond": 0.01,
+        "customerLifeSeconds": 60,
+        "customerAvgDifficulty": 1,
+        "customerDeviation": 1,
+        "customerValueMultiplier": 0.5
+    },
+```
+
+ - `keyLength`                  Equates to how many packets will need to be parsed to maintain the remote ssh key
+ - `customersPerSecond`         `netstat scan --ssh=111.111.111.111 --sshToken=abc123xxxxxxxxx` will result in an average of `1 / customersPerSecond` customers connected
+ - `customerLifeSeconds`        How long the customer remains connected to the business (attack time)
+ - `customerAvgDifficult`       Ciphers will be scored on thier complexity, varying difficulties will decide on how their packets are encrypted.
+ - `customerDeviation`          The range of difficulties presented by customers to this business.
+ - `customerValueMultiplier`    `2 ^ (difficulty * customerValueMultiplier) = value`, i.e. `2 ^ (1 * 0.5) = 1.414`
