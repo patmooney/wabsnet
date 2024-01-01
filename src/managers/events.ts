@@ -6,12 +6,14 @@ import { loadJSON } from "../utils/resource";
 
 const events = loadJSON<{ [key: string]: IEvent }>("events/events.json");
 
-import { appsManager, emailManager } from "../core";
+import { appsManager, emailManager, notificationManager } from "../core";
+import { INotification } from "./notifications";
 
 export enum EventType {
     email,
     app_installed,
-    app_removed
+    app_removed,
+    notification
 }
 
 export type IEvent_Email = {
@@ -28,7 +30,13 @@ export type IEvent_AppInstall = {
 
 export type IEvent_AppRemove = Omit<IEvent_AppInstall, "type"> & { type: EventType.app_removed };
 
-export type IEvent = IEvent_Email | IEvent_AppInstall | IEvent_AppRemove;
+export type IEvent_Notification = {
+    id: string;
+    type: EventType.notification;
+    content: INotification;
+}
+
+export type IEvent = IEvent_Email | IEvent_AppInstall | IEvent_AppRemove | IEvent_Notification;
 
 const SAVE_LOCATION = "./sav.dat";
 
@@ -48,19 +56,22 @@ export class EventManager {
     }
 
     triggerEvent(event: IEvent) {
-        const eventType = event.type;
-        switch(eventType) {
+        const { type, content } = event;
+        switch(type) {
             case EventType.email:
-                emailManager.addEmail(event.content);
+                emailManager.addEmail(content);
                 break;
             case EventType.app_installed:
-                appsManager.installApp(event.content.appName);
+                appsManager.installApp(content.appName);
                 break;
             case EventType.app_removed:
-                appsManager.removeApp(event.content.appName);
+                appsManager.removeApp(content.appName);
+                break;
+            case EventType.notification:
+                notificationManager.createNotification(content.appName, content.content, content.expiresOn);
                 break;
             default:
-                throw new Error(`Unknown event type "${eventType}"`);
+                throw new Error(`Unknown event type "${type}"`);
         }
         this.eventSet.add(event);
     }

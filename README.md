@@ -139,3 +139,25 @@ All command should have help provided. Try using `yarn cmd help` to get started.
  - Generate more wealth
  - Pay off hacker
  - etc...
+
+
+### Remote sessions
+
+ - You can execute any commands via a remote machine.
+ - You should pass `--ssh=111.111.111.111 --sshToken=abc123xxxxxxxxx` to execute any command on a remote machine
+ - Contextually, not all commands would work... probably just the `netstat` commands for now
+ - In order to maintain the sshToken you need to continually attack and decode traffic for the target
+ - Simultaneously, you need to be carrying out your actions via the remote machine (netstat scan/trace for ex.)
+ - Businesses will have a website or similar which allows you to maintain a connection to trace traffic.
+ - Create a new tool called webbot which continually creates traffic.
+
+```
+
+            Business                                         Remote Target
+        /      |       \                                          |
+   [website] [netstat]  [ssh netstat]       ---->     [attack with remote token]
+      /        |         \                                        |
+  [webbot]   [token]     [remote token]                       [profit?]
+
+```
+
