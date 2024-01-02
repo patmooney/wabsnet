@@ -11,10 +11,14 @@
 ### Build binaries
 
 ```
-    yarn app:dist
+yarn app:dist
 ```
 
 Will create artifacts under `./build/`. More binary targets can be added, find them in `electron-builder-targets.txt` add them as necessary to package.json#build
+
+### Project
+
+[Trello](https://trello.com/b/S90YByB1/wabsnet)
 
 ### Commands
 
