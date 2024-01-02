@@ -10,7 +10,7 @@ import { setup } from "./setup";
 
 const sock = xpipe.eq("/tmp/wabsnet");
 
-async function run() {
+export async function run() {
     console.log("\n\n");
     console.log(await catImage("logo.png", 60));
     console.log(chalk.green.bold("\n\n                    WABSNET v.1.933"));
@@ -51,7 +51,9 @@ async function run() {
     });
 
     server.listen(sock, () => {
-        logManager.info(`listening to ${sock}`);
+        logManager.info("Assets loading...");
+        logManager.info("Server setup completed.");
+        logManager.info(`Listening to socket: ${sock}`);
     });
 
     onExit(() => {
@@ -60,6 +62,6 @@ async function run() {
         return true;
     });
 }
-
-run();
-
+if (require.main === module) {
+    run();
+}

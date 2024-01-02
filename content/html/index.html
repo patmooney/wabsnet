@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Wabsnet v1.6993</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <style>
+        #the-log {
+            display: hidden;
+            background: black;
+            border: solid 1px red;
+            color: green;
+            font-family: Courier;
+            padding: 1rem;
+            height: 50px;
+            overflow: auto;
+        }
+        #the-log > p {
+            margin: .1rem;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            flex-basis: row;
+            justify-content: space-between;
+        }
+        .game {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Wabsnet v1.6993</h1>
+        <img width="100px" src="../logo.png"></img>
+    </div>
+    <div class="game">
+        <canvas></canvas>
+    </div>
+    <script src="./pong.js"></script>
+    <div id="the-log"></div>
+    <script src="./renderer.js"></script>
+</body>
+</html>

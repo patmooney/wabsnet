@@ -44,7 +44,6 @@ export class LogManager {
                 levelOrder.indexOf(level) >= levelOrder.indexOf(subscriber.level)
             ).forEach(
                 async (subscriber) => {
-                    console.log("sending to subscriber");
                     if (!subscriber.isRemoved) {
                         subscriber.isRemoved = !(await subscriber.handler(level, log));
                     }

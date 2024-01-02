@@ -1,0 +1,26 @@
+// to be added to `build` config in package.json
+
+{
+        "win": {
+            "icon": "content/logo.ico",
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                },
+                "zip"
+            ]
+        },
+        "mac": {
+            "icon": "content/logo.icns",
+            "target": [
+                "zip",
+                "dmg"
+            ],
+            "hardenedRuntime": true,
+            "gatekeeperAssess": false
+        }
+}
