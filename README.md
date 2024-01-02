@@ -4,6 +4,18 @@
 
     yarn start
 
+### Run frontend + server
+
+    yarn start-electron
+
+### Build binaries
+
+```
+    yarn app:dist
+```
+
+Will create artifacts under `./build/`. More binary targets can be added, find them in `electron-builder-targets.txt` add them as necessary to package.json#build
+
 ### Commands
 
     yarn cmd [cmd-name] [sub-command | args]
@@ -34,11 +46,11 @@ All command should have help provided. Try using `yarn cmd help` to get started.
 
     // Sync function
     const helloWorld = () => "Hello, World!";
-   
-    // IData is always passed to functions, it contains whatever the user has passed as args 
+
+    // IData is always passed to functions, it contains whatever the user has passed as args
     const helloName = ({ name }: IData) => `Hello, ${name}!`;
-   
-    // Generator functions to send back a stream of data 
+
+    // Generator functions to send back a stream of data
     function* randomNumberGenerator ({ randomNumberCount }: IData) {
         try {
             for (let i = 0; i < randomNumberCount; i++) {
@@ -48,8 +60,8 @@ All command should have help provided. Try using `yarn cmd help` to get started.
             // user has ended request, cleanup here optional
         }
     }
-   
-    // functions can be called too! 
+
+    // functions can be called too!
     const asyncFile = async () => {
         // ./src/core/content/apps/example/file.txt
         const fileContent = await catFile("example/file.txt");

@@ -1,6 +1,15 @@
 // to be added to `build` config in package.json
 
 {
+        "linux": {
+            "target": [
+                "deb",
+                "zip"
+            ],
+            "maintainer": "gg44whirlpool@outlook.com",
+            "category": "Utility",
+            "icon": "content/logo.png"
+        },
         "win": {
             "icon": "content/logo.ico",
             "target": [
