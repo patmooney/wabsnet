@@ -8,7 +8,6 @@ var DIRECTION = {
 };
 
 var rounds = [5, 5, 3, 3, 2];
-var colors = ['#000000'];
 
 // The ball object (The cube that bounces back and forth)
 var Ball = {
@@ -194,7 +193,6 @@ var Game = {
 				setTimeout(function () { Pong.endGameMenu('Winner!'); }, 1000);
 			} else {
 				// If there is another round, reset all the values and increment the round number.
-				this.color = this._generateRoundColor();
 				this.player.score = this.paddle.score = 0;
 				this.player.speed += 0.5;
 				this.paddle.speed += 1;
@@ -346,13 +344,6 @@ var Game = {
 	// Wait for a delay to have passed after each turn.
 	_turnDelayIsOver: function() {
 		return ((new Date()).getTime() - this.timer >= 1000);
-	},
-
-	// Select a random color as the background of each level/round.
-	_generateRoundColor: function () {
-		var newColor = colors[Math.floor(Math.random() * colors.length)];
-		if (newColor === this.color) return Pong._generateRoundColor();
-		return newColor;
 	}
 };
 

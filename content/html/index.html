@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <style>
         #the-log {
-            display: hidden;
+            display: none;
             background: black;
             border: solid 1px red;
             color: green;
@@ -30,6 +30,10 @@
             margin-top: 1rem;
             margin-bottom: 1rem;
         }
+        #log-toggle > span {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +46,7 @@
     </div>
     <script src="./pong.js"></script>
     <div id="the-log"></div>
+    <div id="log-toggle"><span>View log &gt;</span></div>
     <script src="./renderer.js"></script>
 </body>
 </html>

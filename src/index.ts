@@ -12,12 +12,19 @@ function createWindow () {
         }
     });
     // comment below to allow dev tools in browser window
-    // win.setMenu(null);
+    win.setMenu(null);
     win.loadFile('../content/html/index.html');
     ipcMain.on("loaded", () => {
         logManager.subscribe("debug", (level: string, log: string) => {
-            win.webContents.send("log-update", `[${level}] - ${log}`);
-            return true;
+            try {
+                if (win.webContents.isDestroyed()) {
+                    return false;
+                }
+                win.webContents.send("log-update", `[${level}] - ${log}`);
+                return true;
+            } catch (e) {
+                return false;
+            }
         });
         run();
     });
