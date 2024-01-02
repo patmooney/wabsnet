@@ -1,12 +1,14 @@
 import net, { Socket } from "node:net";
 import fs from "node:fs";
 import xpipe from "xpipe";
-import { catImage } from "./utils/cat";
+import { catFile, catImage } from "./utils/cat";
 import chalk from "chalk";
 import { handler, setupEmitter } from "./server/request-handler";
-import { haltLoop, startLoop, logManager } from "./core";
+import { haltLoop, startLoop, logManager, achievementManager, eventManager } from "./core";
 import { onExit } from "signal-exit";
 import { setup } from "./setup";
+import { AchievementsType } from "./managers/AchievementManager";
+import { EventType } from "./managers/events";
 
 const sock = xpipe.eq("/tmp/wabsnet");
 
@@ -21,6 +23,20 @@ export async function run() {
 
     const server = net.createServer({ keepAlive: true }, (c: Socket) => {
         const emitter = setupEmitter(c);
+        if (!achievementManager.hasAchievement(AchievementsType.firstConnection)) {
+            eventManager.triggerEvent(
+                eventManager.createEvent({
+                    type: EventType.achievement,
+                    content: {
+                        achievement: AchievementsType.firstConnection,
+                        date: new Date()
+                    }
+                })
+            );
+            catFile('intro.txt').then(
+                text => c.write(text)
+            );
+        }
         logManager.debug("client connected");
         c.on("end", () => {
             logManager.debug("client disconnected");

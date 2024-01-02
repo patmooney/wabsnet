@@ -1,0 +1,15 @@
+Welcome to Wabsnet!
+
+From here-on-in all communication will follow this schema:
+
+Requests:
+
+    `[app-name] [sub-commands....] {"any": "arguments", "come": ["last"], "as": { "json": true } }`
+
+Response:
+
+    `[error | null, response=base64(json) | null]`
+
+To get started:
+
+    `help`

@@ -11,26 +11,31 @@ const client = net.createConnection({ path: sock }, () => {
 
     console.log(`Sending command > ${data}`);
     client.on("data", (data: Buffer) => {
-        const [err, msg] = JSON.parse(data.toString());
-        if (err === "ping") {
-            client.write("pong");
-            return;
-        }
-        if (err) {
-            console.error(`ERROR: ${err}`);
-            client.end();
-        } else {
-            const content = Buffer.from(msg, "base64").toString();
-            try {
-                const json = JSON.parse(content);
-                if (json.help) {
-                    console.log(json.help);
-                } else {
-                    console.log(json);
-                }
-            } catch (e) {
-                console.log(content);
+        try {
+            const [err, msg] = JSON.parse(data.toString());
+            if (err === "ping") {
+                client.write("pong");
+                return;
             }
+            if (err) {
+                console.error(`ERROR: ${err}`);
+                client.end();
+            } else {
+                const content = Buffer.from(msg, "base64").toString();
+                try {
+                    const json = JSON.parse(content);
+                    if (json.help) {
+                        console.log(json.help);
+                    } else {
+                        console.log(json);
+                    }
+                } catch (e) {
+                    console.log(content);
+                }
+            }
+        } catch (err) {
+            console.log(`Unable to parse response`);
+            console.log(data.toString());
         }
     });
     client.write(data);

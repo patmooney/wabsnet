@@ -6,14 +6,16 @@ import { loadJSON } from "../utils/resource";
 
 const events = loadJSON<{ [key: string]: IEvent }>("events/events.json");
 
-import { appsManager, emailManager, logManager, notificationManager } from "../core";
+import { achievementManager, appsManager, emailManager, logManager, notificationManager } from "../core";
 import { INotification } from "./notifications";
+import { AchievementsType } from "./AchievementManager";
 
 export enum EventType {
     email,
     app_installed,
     app_removed,
-    notification
+    notification,
+    achievement
 }
 
 export type IEvent_Email = {
@@ -36,7 +38,16 @@ export type IEvent_Notification = {
     content: INotification;
 }
 
-export type IEvent = IEvent_Email | IEvent_AppInstall | IEvent_AppRemove | IEvent_Notification;
+export type IEvent_Achievement = {
+    id: string;
+    type: EventType.achievement;
+    content: {
+        achievement: AchievementsType;
+        date: Date;
+    }
+}
+
+export type IEvent = IEvent_Email | IEvent_AppInstall | IEvent_AppRemove | IEvent_Notification | IEvent_Achievement;
 
 const SAVE_LOCATION = "./sav.dat";
 
@@ -69,6 +80,9 @@ export class EventManager {
                 break;
             case EventType.notification:
                 notificationManager.createNotification(content.appName, content.content, content.expiresOn);
+                break;
+            case EventType.achievement:
+                achievementManager.addAchievement(content.achievement, content.date);
                 break;
             default:
                 throw new Error(`Unknown event type "${type}"`);
