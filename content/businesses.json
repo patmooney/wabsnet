@@ -1,20 +1,20 @@
 [
     {
-        "domain": "9458751221.jims.wabsnet.biz",
+        "remoteHost": "9458751221.jims.wabsnet.biz",
         "name": "Jim's fish shop",
         "keyLength": 10,
         "customersPerSecond": 0.01,
-        "customerLifeSeconds": 60,
+        "customerLifeMs": 60000,
         "customerAvgDifficulty": 1,
         "customerDeviation": 1,
         "customerValueMultiplier": 0.5
     },
     {
-        "domain": "2296857061.theworldsbank.wabsnet.biz",
+        "remoteHost": "2296857061.theworldsbank.wabsnet.biz",
         "name": "World Bank",
         "keyLength": 200,
         "customersPerSecond": 2,
-        "customerLifeSeconds": 10,
+        "customerLifeMs": 10000,
         "customerAvgDifficulty": 4,
         "customerDeviation": 5,
         "customerValueMultiplier": 3

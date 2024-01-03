@@ -1,9 +1,10 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 export interface ICxn {
-    ttl?: number;
+    expiresOn?: number;
     ip: string;
     app: string;
+    proxyHost?: string;
 }
 
 export const JWT_TTL = 60000;
@@ -23,8 +24,13 @@ export class NetworkManager {
         this.accessMap = new Map<string, AccessToken[]>();
     }
 
-    addActive(app: string, ip: string, ttl?: number) {
-        this.cxnSet.add({ app, ip, ttl });
+    addActive(app: string, ip: string, ttl?: number, proxyHost?: string) {
+        this.cxnSet.add({
+            app,
+            ip,
+            expiresOn: ttl !== undefined ? Date.now() + ttl : undefined,
+            proxyHost
+        });
     }
 
     getActiveAccessTokens(ip: string) {
@@ -71,16 +77,16 @@ export class NetworkManager {
         active && this.cxnSet.delete(active);
     }
 
-    getActive() {
+    getActive(proxyHost?: string) {
         const active = Array.from(this.cxnSet.values())
-            .filter((cxn) => !cxn.ttl || cxn.ttl > Date.now());
+            .filter((cxn) => !cxn.expiresOn || cxn.expiresOn > Date.now());
         this.cxnSet = new Set(active);
-        return active;
+        return active.filter(cxn => cxn.proxyHost === proxyHost);
     }
 
-    getCxn(app: string | undefined, ip: string) {
+    getCxn(app: string | undefined, ip: string, proxyHost?: string) {
         return Array.from(this.cxnSet.values())
-            .find((cxn) => (app ? cxn.app === app : true) && cxn.ip === ip);
+            .find((cxn) => (app ? cxn.app === app : true) && cxn.ip === ip && cxn.proxyHost === proxyHost);
     }
 
     prune() {
@@ -88,5 +94,11 @@ export class NetworkManager {
         Array.from(this.accessMap.keys()).forEach(
             ip => this.getActiveAccessTokens(ip)
         );
+    }
+
+    generateIp() {
+        return (new Array(8)).fill(null).map(
+            () => Math.floor(((256 * 256) - 1) * Math.random()).toString(16)
+        ).join(":");
     }
 }

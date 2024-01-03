@@ -6,6 +6,7 @@ import { EventManager } from "./managers/events";
 import { NotificationManager } from "./managers/notifications";
 import { LogManager } from "./managers/LogManager";
 import { AchievementManager } from "./managers/AchievementManager";
+import { BusinessManager } from "./managers/BusinessManager";
 
 export const appsManager = new AppsManager();
 export const networkManager = new NetworkManager();
@@ -14,6 +15,7 @@ export const eventManager = new EventManager();
 export const notificationManager = new NotificationManager();
 export const logManager = new LogManager("debug");
 export const achievementManager = new AchievementManager();
+export const businessManager = new BusinessManager();
 
 const PERIODIC_FREQUENCY = 60_000;
 let loopId: NodeJS.Timeout;

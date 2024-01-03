@@ -18,8 +18,8 @@ export async function run() {
     console.log(chalk.green.bold("\n\n                    WABSNET v.1.933"));
     console.log("\n\n");
 
-    setup();
-    loadSave();
+    await setup();
+    await loadSave();
     startLoop();
 
     const server = net.createServer({ keepAlive: true }, (c: Socket) => {

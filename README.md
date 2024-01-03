@@ -228,3 +228,10 @@ All command should have help provided. Try using `yarn cmd help` to get started.
  - `customerAvgDifficult`       Ciphers will be scored on thier complexity, varying difficulties will decide on how their packets are encrypted.
  - `customerDeviation`          The range of difficulties presented by customers to this business.
  - `customerValueMultiplier`    `2 ^ (difficulty * customerValueMultiplier) = value`, i.e. `2 ^ (1 * 0.5) = 1.414`
+
+### Longterm
+
+ - Move cipher + customer cxn generation to a separate game-loop
+ - Consider writing the cxn in GO
+ - Have a request handler written in GO, a cipher+cxn manager in GO and the story content + help + etc that isn't
+   So time critical as part of the node app.

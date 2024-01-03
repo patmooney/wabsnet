@@ -1,4 +1,4 @@
-import { networkManager } from "../../core";
+import { businessManager, networkManager } from "../../core";
 import { IApp, IData } from "../../managers/apps";
 import { CommandManager } from "../../managers/commands";
 import { pause } from "../../utils/pause";
@@ -24,17 +24,22 @@ Commands:
     trace    Display raw traffic by given remote-ip.
 `;
 
-const scan = () => networkManager.getActive();
+const scan = (data: IData) => {
+    const { proxyHost } = data.options;
+    if (proxyHost) {
+        businessManager.generateCustomers(proxyHost);
+    }
+    return networkManager.getActive(proxyHost);
+};
 
 async function* trace (data: IData) {
-    const { remoteHost } = data.options;
+    const { remoteHost, proxyHost } = data.options;
     if (!remoteHost) {
         throw new Error("remoteHost is required");
     }
-
     let i = 0;
     const ciphers = [trans, poly, rail, brute];
-    while (networkManager.getCxn(undefined, remoteHost)) {
+    while (networkManager.getCxn(undefined, remoteHost, proxyHost)) {
         let activeToken = networkManager.getActiveAccessTokens(remoteHost).at(0);
         if (!activeToken) {
             activeToken = networkManager.addAccess(remoteHost);
