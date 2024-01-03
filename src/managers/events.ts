@@ -115,4 +115,8 @@ export class EventManager {
             logManager.fatal(`Unable to load save: ${err}`);
         }
     }
+
+    reset() {
+        this.eventSet = new Set<IEvent>();
+    }
 }

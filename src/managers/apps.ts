@@ -1,7 +1,8 @@
 import EventEmitter from "node:events";
 import { AppNotFoundError } from "../errors";
 import { CommandManager } from "./commands";
-import { logManager } from "../core";
+import { achievementManager, emailManager, eventManager, logManager, networkManager, notificationManager } from "../core";
+import { setup } from "../setup";
 
 export interface IData {
     commands: string[];
@@ -25,6 +26,13 @@ export class AppsManager {
         this.appMap = new Map<string, IApp>();
     }
 
+    reset() {
+        Array.from(this.appMap.values() ?? []).forEach(
+            (app) => app.isInstalled = false
+        );
+        this.appMap = new Map<string, IApp>();
+    }
+
     public addApp(app: IApp): void {
         this.appMap.set(app.name, app);
     }
@@ -45,8 +53,24 @@ export class AppsManager {
         app.isInstalled = false;
     }
 
+    public resetGame() {
+        this.reset();
+        emailManager.reset();
+        eventManager.reset();
+        networkManager.reset();
+        achievementManager.reset();
+        notificationManager.reset();
+        setup();
+    }
+
     public async execApp(appName: string, data: IData, emitter: EventEmitter): Promise<void> {
         try {
+            if (appName === "reset") {
+                this.resetGame();
+                emitter.emit("msg", JSON.stringify({ result: true }));
+                emitter.emit("end");
+                return;
+            }
             const app = this.appMap.get(appName);
             if (!app || !app.isInstalled) {
                 throw new AppNotFoundError(appName);

@@ -31,7 +31,6 @@ export default {
     // An array of regexp pattern strings used to skip coverage collection
     coveragePathIgnorePatterns: [
        "/node_modules/",
-       "/src/schema/zapatos/"
     ],
 
     // Indicates which provider should be used to instrument code for coverage
@@ -157,7 +156,7 @@ export default {
     // testLocationInResults: false,
 
     // The glob patterns Jest uses to detect test files
-    testMatch: ["**/tests/**/*.spec.ts"],
+    //testMatch: ["**/tests/unit/**/*.spec.ts"],
 
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
     testPathIgnorePatterns: ["/node_modules/", "/dist/"],

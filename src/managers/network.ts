@@ -15,8 +15,12 @@ export class NetworkManager {
     private accessMap: Map<string, AccessToken[]>;
 
     constructor () {
-        this.cxnSet = new Set<ICxn>;
-        this.accessMap = new Map<string, AccessToken[]>;
+        this.reset();
+    }
+
+    reset() {
+        this.cxnSet = new Set<ICxn>();
+        this.accessMap = new Map<string, AccessToken[]>();
     }
 
     addActive(app: string, ip: string, ttl?: number) {

@@ -1,12 +1,12 @@
 import net, { Socket } from "node:net";
 import fs from "node:fs";
 import xpipe from "xpipe";
-import { catFile, catImage } from "./utils/cat";
+import { catImage } from "./utils/cat";
 import chalk from "chalk";
 import { handler, setupEmitter } from "./server/request-handler";
 import { haltLoop, startLoop, logManager, achievementManager, eventManager } from "./core";
 import { onExit } from "signal-exit";
-import { setup } from "./setup";
+import { loadSave, setup } from "./setup";
 import { AchievementsType } from "./managers/AchievementManager";
 import { EventType } from "./managers/events";
 
@@ -19,6 +19,7 @@ export async function run() {
     console.log("\n\n");
 
     setup();
+    loadSave();
     startLoop();
 
     const server = net.createServer({ keepAlive: true }, (c: Socket) => {
@@ -33,9 +34,12 @@ export async function run() {
                     }
                 })
             );
-            catFile('intro.txt').then(
-                text => c.write(text)
-            );
+            // this is confusing as it doesn't follow the normal schema
+            /*
+             * catFile('intro.txt').then(
+             *   text => c.write(JSON.stringify([null, text]))
+             *);
+             */
         }
         logManager.debug("client connected");
         c.on("end", () => {

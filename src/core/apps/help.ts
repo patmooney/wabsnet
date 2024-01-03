@@ -5,12 +5,12 @@ import { appsManager } from "../../core";
 
 const exec: CommandExecFn = async () => catFile("apps/help/help.txt");
 const listCommands: CommandExecFn = () => {
-    return appsManager.listApps().flatMap(
+    return appsManager.listInstalled().flatMap(
         (app) => app.commands.listCommands().map(c => `${app.name}${c === "default" ? "" : ` ${c}`}`)
     );
 }
 const listApps: CommandExecFn = () => {
-    return appsManager.listApps().map(app => ({
+    return appsManager.listInstalled().map(app => ({
         name: app.name,
         description: app.description
     }));

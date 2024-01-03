@@ -1,5 +1,6 @@
 [
     {
+        "domain": "9458751221.jims.wabsnet.biz",
         "name": "Jim's fish shop",
         "keyLength": 10,
         "customersPerSecond": 0.01,
@@ -9,6 +10,7 @@
         "customerValueMultiplier": 0.5
     },
     {
+        "domain": "2296857061.theworldsbank.wabsnet.biz",
         "name": "World Bank",
         "keyLength": 200,
         "customersPerSecond": 2,

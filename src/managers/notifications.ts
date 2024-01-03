@@ -10,8 +10,13 @@ export class NotificationManager {
     private notificationSet: Set<INotification>;
 
     constructor() {
+        this.reset();
+    }
+
+    reset() {
         this.notificationSet = new Set<INotification>();
     }
+
 
     getNotifications() {
         const notifications = Array.from(this.notificationSet)

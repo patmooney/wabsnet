@@ -9,4 +9,6 @@ export interface ICipherOutput {
     cipherOpts?: string;
     encoding: encodingType;
     digest: string;
+    // FOR DEBUG ONLY - contains whole token
+    token?: string;
 }

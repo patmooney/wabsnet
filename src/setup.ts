@@ -20,7 +20,9 @@ export const setup = () => {
 
     appsManager.installApp("apps");
     appsManager.installApp("help");
+};
 
+export const loadSave = () => {
     logManager.info("Loading events");
     eventManager.loadEvents();
 };

@@ -46,7 +46,11 @@ async function* trace (data: IData) {
         }
         i = i === (chunks.length - 1) ? 0 : i + 1;
         const cipher = cycle<CipherFn>(ciphers);
-        yield cipher(chunks[i]);
+        const packet = await cipher(chunks[i]);
+        if (true) {
+            packet.token = activeToken.token;
+        }
+        yield packet;
         await pause(200);
     }
 

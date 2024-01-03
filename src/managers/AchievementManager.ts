@@ -21,4 +21,8 @@ export class AchievementManager {
         this.achievementMap.set(achievement, date);
         return true;
     }
+
+    reset() {
+        this.achievementMap = new Map<AchievementsType, Date>();
+    }
 }

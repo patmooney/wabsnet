@@ -10,6 +10,10 @@ export class EmailManager {
     private emailMap: Map<string, IEmail>;
 
     constructor() {
+        this.reset();
+    }
+
+    reset() {
         this.emailMap = new Map<string, IEmail>();
     }
 

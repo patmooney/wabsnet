@@ -32,9 +32,20 @@ export const handler = async (emitter: EventEmitter, d: Buffer) => {
 
 export const setupEmitter = (c: Socket) => {
     const emitter = new EventEmitter();
-    emitter.on("msg", (text) => c.write(JSON.stringify([null, Buffer.from(text).toString("base64")])));
-    emitter.on("ping", () => c.write(JSON.stringify(["ping", null])));
-    emitter.on("end", () => c.end());
+    const writeUnlessClosed = (data: string) => {
+        if (c.closed) {
+            console.error("Tried to write to socket after closed");
+            return;
+        }
+        try {
+            c.write(data);
+        } catch (e) {
+            console.error(`Write error: ${(e as Error).message}`);
+        }
+    };
+    emitter.on("msg", (text) => writeUnlessClosed(JSON.stringify([null, Buffer.from(text).toString("base64")])));
+    emitter.on("ping", () => writeUnlessClosed(JSON.stringify(["ping", null])));
+    emitter.on("end", () => setTimeout(() => c.end(), 100));
     emitter.on("error", (err) => c.write(JSON.stringify([err, null])));
     return emitter;
 }
